@@ -1,10 +1,13 @@
 import type { Plant } from '../../src/db/types.ts'
 import { dueReminder, type ReminderPayload } from '../../src/domain/reminders.ts'
 import { computeSchedule, needsWater } from '../../src/domain/watering.ts'
-import type { DeviceSubscription, StoreData } from './store.ts'
+import type { DeviceSubscription, Household } from './store.ts'
+
+/** The part of a household reminders look at. */
+export type ReminderState = Pick<Household, 'plants' | 'events' | 'subscriptions'>
 
 /*
- * Daily reminders. Dates and times use the server process's timezone (the
+ * Daily reminders, per household. Dates and times use the server process's timezone (the
  * TZ env var), which should be the household's timezone.
  */
 
@@ -12,7 +15,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 export const localDate = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 export const localTime = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`
 
-export function plantsNeedingWater(data: StoreData, now: Date): Plant[] {
+export function plantsNeedingWater(data: ReminderState, now: Date): Plant[] {
   const events = Object.values(data.events).map((s) => s.rec).filter((e) => !e.deletedAt)
   return Object.values(data.plants)
     .map((s) => s.rec)
@@ -28,7 +31,7 @@ export type Sender = (sub: DeviceSubscription, payload: ReminderPayload) => Prom
  * after its chosen time (so a restart past that time still sends it), and
  * only if something needs water. Returns true if the store changed.
  */
-export async function runReminders(data: StoreData, now: Date, send: Sender): Promise<boolean> {
+export async function runReminders(data: ReminderState, now: Date, send: Sender): Promise<boolean> {
   const today = localDate(now)
   const time = localTime(now)
   const due = Object.values(data.subscriptions).filter((s) => s.lastSentDate !== today && s.time <= time)

@@ -276,3 +276,22 @@ details summary { cursor: pointer; padding: 4px 0; }
 
 .empty { text-align: center; padding: 48px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .big-emoji { font-size: 3rem; margin: 0; }
+
+/* Sync: household join/create */
+.segmented { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--accent-soft); }
+.segmented button {
+  flex: 1;
+  min-height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.segmented button.active { background: var(--surface); color: var(--accent); font-weight: 600; }
+.invite { display: flex; flex-direction: column; gap: 6px; padding: 10px; border-radius: 10px; background: var(--accent-soft); }
+.invite-code { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); }
+details.subsection summary { list-style-position: inside; }
+details.subsection summary h4 { display: inline; }

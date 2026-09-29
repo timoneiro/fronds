@@ -6,7 +6,7 @@ import { Store } from './store.ts'
 
 const config = await loadConfig()
 const store = new Store(config.dataDir)
-await store.load()
+await store.load(config.legacyKey)
 
 webpush.setVapidDetails(config.vapid.subject, config.vapid.publicKey, config.vapid.privateKey)
 
@@ -27,7 +27,11 @@ setInterval(async () => {
   if (ticking) return
   ticking = true
   try {
-    if (await runReminders(store.data, new Date(), send)) await store.save()
+    let changed = false
+    for (const household of Object.values(store.data.households)) {
+      if (await runReminders(household, new Date(), send)) changed = true
+    }
+    if (changed) await store.save()
   } catch (err) {
     console.error('Reminder run failed:', err)
   } finally {
@@ -36,9 +40,10 @@ setInterval(async () => {
 }, 30_000)
 
 createApp(config, store, send).listen(config.port, () => {
-  console.log(`fronds-server ${VERSION} listening on :${config.port} (timezone ${config.timezone})`)
-  console.log(`Household key: ${config.key}`)
-  console.log('Enter the server URL and this key in the app: Settings → Sync & reminders.')
+  const households = Object.keys(store.data.households).length
+  console.log(`fronds-server ${VERSION} listening on :${config.port} (timezone ${config.timezone}, ${households} household(s))`)
+  console.log(`Server code: ${config.serverCode}`)
+  console.log('Share the server code with people who may create a household: fronds → Settings → Sync & reminders → Create.')
 })
 
 const shutdown = async () => {

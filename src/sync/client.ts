@@ -1,4 +1,3 @@
-import { takeSnapshot } from '../db/snapshots'
 import { db, nowISO } from '../db/db'
 import { getSyncConfig, setSyncConfig, type SyncConfig } from '../db/syncState'
 import type { CareEvent, Plant, SyncMeta } from '../db/types'
@@ -22,18 +21,19 @@ export function normaliseServerUrl(input: string): string {
   return parsed.origin + parsed.pathname.replace(/\/+$/, '')
 }
 
-export async function api<T>(cfg: Pick<SyncConfig, 'url' | 'key'>, path: string, body?: unknown): Promise<T> {
+/** Call the server. `key` is this device's token; omit it for public endpoints. */
+export async function api<T>(cfg: { url: string; key?: string }, path: string, body?: unknown): Promise<T> {
   let res: Response
   try {
     res = await fetch(`${cfg.url}${path}`, {
       method: body === undefined ? 'GET' : 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${cfg.key}` },
+      headers: { 'Content-Type': 'application/json', ...(cfg.key ? { Authorization: `Bearer ${cfg.key}` } : {}) },
       body: body === undefined ? undefined : JSON.stringify(body),
     })
   } catch {
     throw new SyncError("Couldn't reach the server — check the address and that you're on your network/Tailscale")
   }
-  if (res.status === 401) throw new SyncError('The server rejected the household key', 401)
+  if (res.status === 401) throw new SyncError('This phone is no longer part of the household on this server', 401)
   if (!res.ok) {
     const msg = ((await res.json().catch(() => undefined)) as { error?: string } | undefined)?.error
     throw new SyncError(msg ?? `Server error (${res.status})`, res.status)
@@ -47,17 +47,7 @@ export async function fetchServerInfo(cfg: Pick<SyncConfig, 'url' | 'key'>): Pro
   return info
 }
 
-/** Connect this device to a server. Existing local data is snapshotted, then uploaded and merged. */
-export async function connectServer(urlInput: string, key: string): Promise<ServerInfo> {
-  const url = normaliseServerUrl(urlInput)
-  const info = await fetchServerInfo({ url, key: key.trim() })
-  await takeSnapshot('Before connecting to sync server')
-  await setSyncConfig({ url, key: key.trim(), cursor: 0, initialUploadDone: false, timezone: info.timezone })
-  await runSync()
-  return info
-}
-
-/** Stop syncing. Local data is kept as-is. */
+/** Forget the server on this phone without contacting it. Local data is kept as-is. */
 export async function disconnectServer() {
   await setSyncConfig(undefined)
 }
@@ -117,7 +107,7 @@ async function doSync(): Promise<boolean> {
     response = await api<SyncResponse>(cfg, '/api/sync', request)
   } catch (err) {
     const latest = await getSyncConfig()
-    if (latest) await setSyncConfig({ ...latest, lastError: (err as Error).message })
+    if (latest) await setSyncConfig({ ...latest, lastError: (err as Error).message, lastErrorStatus: (err as SyncError).status })
     throw err
   }
 
@@ -129,7 +119,7 @@ async function doSync(): Promise<boolean> {
     await applyPulled('events', response.events)
     const latest = await getSyncConfig()
     if (latest?.url !== cfg.url) return false // disconnected or switched servers meanwhile
-    await setSyncConfig({ ...latest, cursor: response.cursor, initialUploadDone: true, lastSyncAt: nowISO(), lastError: undefined })
+    await setSyncConfig({ ...latest, cursor: response.cursor, initialUploadDone: true, lastSyncAt: nowISO(), lastError: undefined, lastErrorStatus: undefined })
     return true
   })
 }
