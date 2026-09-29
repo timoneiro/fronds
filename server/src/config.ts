@@ -1,39 +1,49 @@
-import { randomBytes } from 'node:crypto'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import webpush from 'web-push'
+import { newCode } from './secrets.ts'
 
 export interface Config {
   port: number
   dataDir: string
-  /** Household key the app sends as a bearer token. */
-  key: string
+  /** Code the server owner shares with people allowed to create a household. */
+  serverCode: string
+  /** Shared key from server 0.1, only used to migrate an existing single-household store. */
+  legacyKey?: string
   vapid: { publicKey: string; privateKey: string; subject: string }
   allowedOrigins: string[] | '*'
   timezone: string
 }
 
 interface Secrets {
-  key: string
+  serverCode?: string
+  /** Server 0.1's shared household key. */
+  key?: string
   vapidPublicKey: string
   vapidPrivateKey: string
 }
 
-/** Secrets are generated on first start and kept in the data volume. */
+/**
+ * Secrets are generated on first start and kept in the data volume. Existing
+ * values are never regenerated — the VAPID keys in particular must stay the
+ * same or every phone's push subscription stops working.
+ */
 async function loadSecrets(dataDir: string): Promise<Secrets> {
   await mkdir(dataDir, { recursive: true })
   const path = join(dataDir, 'secrets.json')
+  let secrets: Secrets | undefined
   try {
-    return JSON.parse(await readFile(path, 'utf8')) as Secrets
+    secrets = JSON.parse(await readFile(path, 'utf8')) as Secrets
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err
   }
-  const vapid = webpush.generateVAPIDKeys()
-  const secrets: Secrets = {
-    key: randomBytes(24).toString('base64url'),
-    vapidPublicKey: vapid.publicKey,
-    vapidPrivateKey: vapid.privateKey,
+  if (secrets?.serverCode) return secrets
+
+  if (!secrets) {
+    const vapid = webpush.generateVAPIDKeys()
+    secrets = { vapidPublicKey: vapid.publicKey, vapidPrivateKey: vapid.privateKey }
   }
+  secrets.serverCode = newCode()
   await writeFile(path, JSON.stringify(secrets, null, 2), { mode: 0o600 })
   return secrets
 }
@@ -45,7 +55,8 @@ export async function loadConfig(env = process.env): Promise<Config> {
   return {
     port: Number(env.PORT ?? 8787),
     dataDir,
-    key: env.FRONDS_KEY || secrets.key,
+    serverCode: env.FRONDS_SERVER_CODE || secrets.serverCode!,
+    legacyKey: env.FRONDS_KEY || secrets.key,
     vapid: {
       publicKey: secrets.vapidPublicKey,
       privateKey: secrets.vapidPrivateKey,

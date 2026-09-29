@@ -1,7 +1,10 @@
 import type { SyncMeta } from '../../src/db/types.ts'
 import { assertRecords, BackupError } from '../../src/domain/backup.ts'
 import type { SyncRequest, SyncResponse } from '../../src/domain/syncProtocol.ts'
-import type { Stored, StoreData } from './store.ts'
+import type { Household, Stored } from './store.ts'
+
+/** The part of a household that sync reads and writes. */
+export type SyncState = Pick<Household, 'seq' | 'plants' | 'events'>
 
 export class BadRequest extends Error {}
 
@@ -59,7 +62,7 @@ function changesSince<T extends SyncMeta>(
  * Record-level last-writer-wins merge, the same rule as backup import.
  * Mutates `data`; returns whether anything changed so the caller can persist.
  */
-export function applySync(data: StoreData, req: SyncRequest): { response: SyncResponse; changed: boolean } {
+export function applySync(data: SyncState, req: SyncRequest): { response: SyncResponse; changed: boolean } {
   const before = data.seq
   const nextSeq = () => ++data.seq
   const p = mergeTable(data.plants, req.plants, nextSeq)

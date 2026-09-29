@@ -20,8 +20,9 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
   record-by-record (newest edit wins, deletions included), so it's safe to import the same file twice.
   Automatic safety snapshots are kept before risky operations.
 - **Optional sync & push reminders** — run the small [fronds server](server/README.md) (one Docker
-  container, e.g. on a home NAS) to share one collection between phones and get a daily notification
-  when plants need water. No accounts, no third-party keys.
+  container, e.g. on a home NAS) to share one collection between the phones in a household and get a
+  daily notification when plants need water. One server can host several separate households;
+  phones join with one-time invites and can be removed individually. No accounts, no third-party keys.
 
 ## Privacy & data
 

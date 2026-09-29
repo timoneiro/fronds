@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { CareEvent, Plant } from '../../src/db/types.ts'
-import { emptyData } from './store.ts'
+import { newHousehold } from './store.ts'
 import { applySync, BadRequest, parseSyncRequest } from './sync.ts'
 
 const plant = (id: string, updatedAt: string, name = id): Plant => ({
@@ -21,7 +21,7 @@ const event = (id: string, updatedAt: string): CareEvent => ({
 
 describe('applySync', () => {
   it('stores pushed records without echoing them back', () => {
-    const data = emptyData()
+    const data = newHousehold('Test')
     const { response, changed } = applySync(data, { cursor: 0, plants: [plant('a', '2026-01-02')], events: [event('e1', '2026-01-02')] })
     expect(changed).toBe(true)
     expect(response.cursor).toBe(2)
@@ -31,7 +31,7 @@ describe('applySync', () => {
   })
 
   it('returns changes from other devices since the cursor', () => {
-    const data = emptyData()
+    const data = newHousehold('Test')
     applySync(data, { cursor: 0, plants: [plant('a', '2026-01-02')], events: [] }) // device A, seq 1
     const b = applySync(data, { cursor: 0, plants: [plant('b', '2026-01-03')], events: [] }) // device B
     expect(b.response.plants.map((p) => p.id)).toEqual(['a'])
@@ -41,7 +41,7 @@ describe('applySync', () => {
   })
 
   it('keeps the newer version and hands the winner back to a stale pusher', () => {
-    const data = emptyData()
+    const data = newHousehold('Test')
     applySync(data, { cursor: 0, plants: [plant('a', '2026-01-05', 'new')], events: [] })
     const { response } = applySync(data, { cursor: 1, plants: [plant('a', '2026-01-04', 'old')], events: [] })
     expect(data.plants.a.rec.name).toBe('new')
@@ -49,7 +49,7 @@ describe('applySync', () => {
   })
 
   it('ignores an identical re-push', () => {
-    const data = emptyData()
+    const data = newHousehold('Test')
     applySync(data, { cursor: 0, plants: [plant('a', '2026-01-05')], events: [] })
     const again = applySync(data, { cursor: 1, plants: [plant('a', '2026-01-05')], events: [] })
     expect(again.changed).toBe(false)

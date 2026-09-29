@@ -2,13 +2,13 @@ import { describe, expect, it, vi } from 'vitest'
 import type { Plant } from '../../src/db/types.ts'
 import { dueReminder } from '../../src/domain/reminders.ts'
 import { runReminders, type Sender } from './reminders.ts'
-import { emptyData, type DeviceSubscription, type StoreData } from './store.ts'
+import { newHousehold, type DeviceSubscription, type Household } from './store.ts'
 
 const T = '2026-01-01T00:00:00.000Z'
 const at = (day: number, h: number, m = 0) => new Date(2026, 2, day, h, m)
 
-function household(): StoreData {
-  const data = emptyData()
+function household(): Household {
+  const data = newHousehold('Test')
   const add = (id: string, name: string, lastWatered?: Date) => {
     data.plants[id] = { seq: 1, rec: { id, name, wateringIntervalDays: 7, createdAt: T, updatedAt: T } }
     if (lastWatered) {
@@ -23,7 +23,7 @@ function household(): StoreData {
   return data
 }
 
-const subscribe = (data: StoreData, deviceId: string, time: string) => {
+const subscribe = (data: Household, deviceId: string, time: string) => {
   const sub: DeviceSubscription = {
     deviceId,
     time,

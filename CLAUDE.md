@@ -15,6 +15,8 @@ non-destructive for existing data:
 - **Backup format** (`src/domain/backup.ts`): add optional fields only; bumping `SCHEMA_VERSION`
   makes older app versions reject new backups — needs a migration in `parseBackup`.
 - **Sync protocol** (`src/domain/syncProtocol.ts`): backward compatible both ways.
+- **Server store** (`server/src/store.ts`): upgrade old formats in `migrate()` (keeps a pre-upgrade copy);
+  never regenerate existing secrets — VAPID keys changing would break every push subscription.
 - Take a snapshot (`takeSnapshot`) before any operation that removes or overwrites local data.
 - Ship through a PR (CI runs tests + builds); merging to `main` deploys to users immediately.
 
@@ -27,7 +29,8 @@ non-destructive for existing data:
   add the record to the `outbox` for sync.
 - Users of a server may be off its network (Tailscale) for a while: sync failures are normal, not
   errors — changes wait in the outbox; reminders are re-checked on the phone (`sync/reminderCheck.ts`).
-- Target scale: 10–50 plants, one household per server. English only.
+- Target scale: 10–50 plants per household; a server hosts several isolated households (server code to
+  create one, one-time invites to join, per-device tokens stored hashed). English only.
 
 ## Layout
 - `src/domain/` — pure, unit-tested logic shared with the server. Relative imports here use explicit
