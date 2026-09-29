@@ -180,6 +180,15 @@ English Wikipedia article title; pet toxicity should follow the
 [ASPCA plant list](https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants).
 PRs welcome.
 
+## Support fronds
+
+fronds is free, open source and ad-free, and it will stay that way. If it has kept a plant or two
+alive for you and you'd like to say thanks, you can
+[buy me a coffee on Ko-fi ☕](https://ko-fi.com/ricardoalmeida59690). Completely optional, and
+much appreciated.
+
+Bug reports, ideas and species additions are just as welcome: [open an issue](https://github.com/timoneiro/fronds/issues).
+
 ## License
 
 [MIT](LICENSE)

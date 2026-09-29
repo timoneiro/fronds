@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { downloadBlob, downloadJSON, exportBackup, importMerge, importReplace } from '../../db/backupIO'
 import { db } from '../../db/db'
+import { LINKS } from '../../lib/links'
 import { requestPersistentStorage } from '../../lib/storage'
 import { BackupError } from '../../domain/backup'
 import { buildICS } from '../../domain/calendar'
@@ -123,11 +124,17 @@ export function SettingsPage() {
         <h3>About</h3>
         <p className="muted small">
           fronds v{__APP_VERSION__} · open source ·{' '}
-          <a className="link" href="https://github.com/timoneiro/fronds" target="_blank" rel="noreferrer">
+          <a className="link" href={LINKS.github} target="_blank" rel="noreferrer">
             GitHub
           </a>
           <br />
           Plant descriptions and photos from Wikipedia. No account, no tracking.
+        </p>
+        <p className="small">
+          ☕ Enjoying fronds? It's free and always will be.{' '}
+          <a className="link" href={LINKS.donate} target="_blank" rel="noreferrer">
+            Support it on Ko-fi
+          </a>
         </p>
       </section>
     </>
