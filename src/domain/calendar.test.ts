@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Plant } from '../db/types'
+import type { Plant } from '../db/types.ts'
 import { buildICS, googleCalendarLink } from './calendar'
 
 const plant: Plant = {

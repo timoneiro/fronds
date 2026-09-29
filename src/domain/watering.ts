@@ -1,4 +1,4 @@
-import type { CareEvent, Plant } from '../db/types'
+import type { CareEvent, Plant } from '../db/types.ts'
 
 const DAY_MS = 86_400_000
 

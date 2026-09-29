@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { CareEvent, Plant } from '../db/types'
+import type { CareEvent, Plant } from '../db/types.ts'
 import { computeSchedule, daysBetween, suggestInterval } from './watering'
 
 const T = '2026-01-01T00:00:00.000Z'

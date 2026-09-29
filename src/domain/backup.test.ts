@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Plant } from '../db/types'
+import type { Plant } from '../db/types.ts'
 import { BackupError, buildBackup, mergeRecords, parseBackup, SCHEMA_VERSION } from './backup'
 
 const plant = (id: string, updatedAt: string, extra: Partial<Plant> = {}): Plant => ({

@@ -18,20 +18,22 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
   Google/Apple Calendar with every plant's recurring watering.
 - **Backup & transfer** — export a single JSON file and import it on another device. Imports *merge*
   record-by-record (newest edit wins, deletions included), so it's safe to import the same file twice.
+  Automatic safety snapshots are kept before risky operations.
+- **Optional sync & push reminders** — run the small [fronds server](server/README.md) (one Docker
+  container, e.g. on a home NAS) to share one collection between phones and get a daily notification
+  when plants need water. No accounts, no third-party keys.
 
 ## Privacy & data
 
 Everything is stored locally in your browser (IndexedDB). Nothing is sent anywhere except species
-look-ups to Wikipedia. Browsers can evict site data under storage pressure — especially iOS Safari —
-so install the app to your home screen and **export a backup now and then**.
+look-ups to Wikipedia — and, only if you connect one, your own sync server. Browsers can evict site
+data under storage pressure — especially iOS Safari — so install the app to your home screen and
+**export a backup now and then**.
 
 ## Roadmap
 
 - **Google Drive backup** — sign in with Google only if you want it; stores the same backup file in the
   app's private Drive folder.
-- **Optional self-hosted sync & reminder server** — a single Docker container (e.g. on a home NAS)
-  that syncs devices and sends real push notifications when a plant is due. The app keeps working
-  fully without it.
 - Care tasks beyond watering (fertilising, repotting, misting), seasonal interval adjustments,
   photo timeline.
 
@@ -52,10 +54,13 @@ deep links work on GitHub Pages). Pushes to `main` are tested and deployed to Gi
 
 ```
 src/
-  db/        Dexie schema, write actions, backup import/export
+  db/        Dexie schema (append-only versions), write actions, backup import/export, snapshots
   domain/    pure logic: watering schedule, backup merge, calendar export (unit-tested)
   species/   bundled care catalog + Wikipedia client
+  sync/      sync client, push reminders, reminder check (shared with the service worker)
   ui/        pages, components, hooks
+  sw.ts      service worker: offline cache + push notifications
+server/      optional sync & reminder server (Node, runs the shared domain code directly)
 ```
 
 ### Adding a species

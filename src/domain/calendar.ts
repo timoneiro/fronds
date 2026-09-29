@@ -1,4 +1,4 @@
-import type { Plant } from '../db/types'
+import type { Plant } from '../db/types.ts'
 
 /**
  * Calendar reminders without any Google/Apple API: a prefilled "Add to Google

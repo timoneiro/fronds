@@ -1,4 +1,4 @@
-import type { CareEvent, Plant, SyncMeta } from '../db/types'
+import type { CareEvent, Plant, SyncMeta } from '../db/types.ts'
 
 /**
  * The single data format used for export/import today and for Drive backup
@@ -42,16 +42,24 @@ export function parseBackup(text: string): Backup {
   }
   if (!Array.isArray(data.plants) || !Array.isArray(data.events)) throw new BackupError('Backup is missing data')
 
-  for (const p of data.plants) {
+  assertRecords(data.plants, data.events)
+  return data as unknown as Backup
+}
+
+/** Shape-check plant/event records from any untrusted source (backup file, sync payload). */
+export function assertRecords(plants: unknown[], events: unknown[]): asserts plants is Plant[] {
+  for (const p of plants) {
     checkMeta(p, 'plant')
-    if (typeof (p as unknown as Plant).name !== 'string') throw new BackupError('Invalid plant record in backup')
+    const plant = p as unknown as Plant
+    if (typeof plant.name !== 'string' || typeof plant.wateringIntervalDays !== 'number') {
+      throw new BackupError('Invalid plant record in backup')
+    }
   }
-  for (const e of data.events) {
+  for (const e of events) {
     checkMeta(e, 'event')
     const ev = e as unknown as CareEvent
     if (typeof ev.plantId !== 'string' || typeof ev.at !== 'string') throw new BackupError('Invalid event record in backup')
   }
-  return data as unknown as Backup
 }
 
 /**
