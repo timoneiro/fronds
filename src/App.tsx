@@ -1,0 +1,38 @@
+import { HashRouter, NavLink, Route, Routes } from 'react-router'
+import { PlantDetailPage } from './ui/pages/PlantDetailPage'
+import { PlantFormPage } from './ui/pages/PlantFormPage'
+import { PlantsPage } from './ui/pages/PlantsPage'
+import { SettingsPage } from './ui/pages/SettingsPage'
+import { TodayPage } from './ui/pages/TodayPage'
+
+export default function App() {
+  return (
+    // Hash routing keeps deep links working on GitHub Pages without server rewrites.
+    <HashRouter>
+      <header className="topbar">
+        <h1>🌿 fronds</h1>
+      </header>
+      <main className="page">
+        <Routes>
+          <Route path="/" element={<TodayPage />} />
+          <Route path="/plants" element={<PlantsPage />} />
+          <Route path="/plants/new" element={<PlantFormPage />} />
+          <Route path="/plants/:id" element={<PlantDetailPage />} />
+          <Route path="/plants/:id/edit" element={<PlantFormPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </main>
+      <nav className="tabbar">
+        <NavLink to="/" end>
+          <span aria-hidden>💧</span>Today
+        </NavLink>
+        <NavLink to="/plants">
+          <span aria-hidden>🪴</span>Plants
+        </NavLink>
+        <NavLink to="/settings">
+          <span aria-hidden>⚙️</span>Settings
+        </NavLink>
+      </nav>
+    </HashRouter>
+  )
+}
