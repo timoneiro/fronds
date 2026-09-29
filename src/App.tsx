@@ -1,4 +1,5 @@
 import { HashRouter, NavLink, Route, Routes } from 'react-router'
+import { useAutoSync } from './sync/useAutoSync'
 import { PlantDetailPage } from './ui/pages/PlantDetailPage'
 import { PlantFormPage } from './ui/pages/PlantFormPage'
 import { PlantsPage } from './ui/pages/PlantsPage'
@@ -6,6 +7,7 @@ import { SettingsPage } from './ui/pages/SettingsPage'
 import { TodayPage } from './ui/pages/TodayPage'
 
 export default function App() {
+  useAutoSync()
   return (
     // Hash routing keeps deep links working on GitHub Pages without server rewrites.
     <HashRouter>

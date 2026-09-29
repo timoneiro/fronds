@@ -1,8 +1,11 @@
+import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { downloadBlob, downloadJSON, exportBackup, importMerge, importReplace } from '../../db/backupIO'
-import { requestPersistentStorage } from '../../db/db'
+import { db } from '../../db/db'
+import { requestPersistentStorage } from '../../lib/storage'
 import { BackupError } from '../../domain/backup'
 import { buildICS } from '../../domain/calendar'
+import { SyncSection } from '../components/SyncSection'
 import { useGarden } from '../hooks'
 
 const stamp = () => new Date().toLocaleDateString('en-CA')
@@ -11,6 +14,7 @@ export function SettingsPage() {
   const { items } = useGarden()
   const [message, setMessage] = useState<{ kind: 'ok' | 'error'; text: string }>()
   const [persisted, setPersisted] = useState<boolean>()
+  const snapshots = useLiveQuery(() => db.snapshots.orderBy('createdAt').reverse().toArray(), [])
 
   useEffect(() => {
     navigator.storage?.persisted?.().then(setPersisted).catch(() => setPersisted(false))
@@ -23,7 +27,9 @@ export function SettingsPage() {
 
   const onImport = async (file: File | undefined, mode: 'merge' | 'replace') => {
     if (!file) return
-    if (mode === 'replace' && !confirm('Replace ALL plants on this device with the backup? This cannot be undone.')) return
+    const replaceWarning =
+      "Replace ALL plants on this device with the backup? A safety snapshot of the current data is kept below. If sync is on, the server's copy will be merged back in."
+    if (mode === 'replace' && !confirm(replaceWarning)) return
     try {
       const text = await file.text()
       const r = mode === 'merge' ? await importMerge(text) : await importReplace(text)
@@ -47,7 +53,7 @@ export function SettingsPage() {
       <section className="card">
         <h3>Backup & transfer</h3>
         <p className="muted small">
-          Your plants live only on this device. Export a backup file to keep it safe or move it to another phone,
+          Your plants are stored on this device. Export a backup file to keep it safe or move it to another phone,
           then import it there. “Merge” keeps the newest version of each plant from both sides.
         </p>
         <div className="stack">
@@ -63,7 +69,27 @@ export function SettingsPage() {
             <input type="file" accept="application/json,.json" hidden onChange={(e) => { void onImport(e.target.files?.[0], 'replace'); e.target.value = '' }} />
           </label>
         </div>
+        {snapshots && snapshots.length > 0 && (
+          <details className="small">
+            <summary className="muted">Safety snapshots ({snapshots.length})</summary>
+            <p className="muted">Taken automatically before risky operations. Download one and use Import to restore it.</p>
+            <ul className="history">
+              {snapshots.map((snap) => (
+                <li key={snap.id}>
+                  <span>
+                    {snap.reason} <span className="muted">· {new Date(snap.createdAt).toLocaleString()} · {snap.plants} plants</span>
+                  </span>
+                  <button className="btn btn-small btn-ghost" onClick={() => downloadJSON(snap.data, `fronds-snapshot-${snap.createdAt.slice(0, 10)}.json`)}>
+                    ⬇️
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
       </section>
+
+      <SyncSection />
 
       <section className="card">
         <h3>Calendar</h3>

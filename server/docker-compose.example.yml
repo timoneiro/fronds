@@ -1,0 +1,15 @@
+services:
+  fronds:
+    container_name: fronds
+    image: ghcr.io/timoneiro/fronds-server:latest
+    pull_policy: always
+    ports:
+      - 8787:8787
+    volumes:
+      - ./data:/data
+    environment:
+      # Reminders are sent at each phone's chosen time in this timezone.
+      - TZ=Etc/UTC  # e.g. Europe/London
+      # Only the hosted app may call the server from a browser.
+      - ALLOWED_ORIGINS=https://timoneiro.github.io
+    restart: unless-stopped

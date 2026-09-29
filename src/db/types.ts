@@ -37,6 +37,29 @@ export interface CareEvent extends SyncMeta {
   note?: string
 }
 
+/** Local-only key/value settings (never synced or exported). */
+export interface SettingEntry {
+  key: string
+  value: unknown
+}
+
+/** A synced record changed locally that the sync server hasn't seen yet. */
+export interface OutboxEntry {
+  table: 'plants' | 'events'
+  id: string
+}
+
+/** Automatic local backup taken before risky operations (import-replace, first sync). */
+export interface Snapshot {
+  id?: number
+  createdAt: ISODate
+  reason: string
+  /** Serialised Backup JSON. */
+  data: string
+  plants: number
+  events: number
+}
+
 export interface WikiCacheEntry {
   title: string
   fetchedAt: ISODate
