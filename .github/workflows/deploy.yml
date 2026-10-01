@@ -55,8 +55,9 @@ jobs:
         uses: actions/deploy-pages@v5
 
   # Emails this version's CHANGELOG.md entry to subscribers once it's live (once per version).
+  # Off unless the repo variable ANNOUNCE_RELEASES is "true" (Settings → Secrets and variables → Actions).
   announce:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && vars.ANNOUNCE_RELEASES == 'true'
     needs: deploy
     runs-on: ubuntu-latest
     steps:
