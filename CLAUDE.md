@@ -26,7 +26,7 @@ Every user-facing change (feature or noticeable fix) bumps `version` in `package
 (`src/domain/changelog.test.ts` fails CI if the entry is missing). That entry is the "What's new" card
 in the app, and after the merge to `main` deploys, `scripts/announce-release.ts` emails it to the
 Buttondown subscribers. It sends once per version, so internal-only changes (refactors, CI, docs) skip
-the bump and send nothing. Preview the email with `node scripts/announce-release.ts --dry-run`.
+the bump and send nothing. Sending only runs while the repo variable `ANNOUNCE_RELEASES` is `true`. Preview the email with `node scripts/announce-release.ts --dry-run`.
 Repo secrets: `BUTTONDOWN_API_KEY` (sending) and `BUTTONDOWN_USERNAME` (the subscribe form, injected
 at build time as `VITE_BUTTONDOWN_USERNAME` — never commit it; locally use `.env.local`).
 
