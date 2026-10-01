@@ -19,6 +19,9 @@ Write for people who use the app, not for developers.
 - The link is a copy from the day you send it and doesn't update. Send a new one any time.
 - Opening a shared link never mixes it with your own plants. Tap **Add to my plants** on one you like
   to start your own with the same species and watering interval.
+- **On iPhone**, links open in Safari, which keeps its plants separate from the fronds app on your
+  Home Screen. So there, **Add in the fronds app** copies the link: open fronds from your Home Screen
+  and go to Plants → **Open a shared link** to paste it.
 
 ## 0.4.1 — 2026-10-01
 

@@ -1,13 +1,13 @@
 import { getDeviceId, getReminderConfig, getSyncConfig, setReminderConfig } from '../db/syncState'
 import type { PushSubscribeRequest } from '../domain/syncProtocol'
+import { inIosBrowser } from '../lib/platform'
 import { api, fetchServerInfo, SyncError } from './client'
 
 export const pushSupported = () =>
   typeof window !== 'undefined' && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
 
 /** iOS only allows web push for apps added to the home screen. */
-export const needsHomeScreenInstall = () =>
-  /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches
+export const needsHomeScreenInstall = inIosBrowser
 
 function base64UrlToBytes(b64: string): Uint8Array<ArrayBuffer> {
   const padded = (b64 + '='.repeat((4 - (b64.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/')

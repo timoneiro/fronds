@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ShareError, type SharedCollection } from '../domain/share'
-import { readShareData, shareLink } from './shareLink'
+import { readShareData, shareLink, shareRouteFrom } from './shareLink'
 
 const APP = 'https://timoneiro.github.io/fronds/'
 
@@ -34,6 +34,14 @@ describe('share links', () => {
     const data = dataOf(await shareLink(share, APP))
     await expect(readShareData(data.slice(0, data.length / 2))).rejects.toThrow(ShareError)
     await expect(readShareData('not*base64')).rejects.toThrow(/cut off/)
+  })
+
+  it('finds the link in a pasted message', () => {
+    expect(shareRouteFrom(`Sam shared 20 plants with you on fronds 🪴 ${APP}#/view/abc-_9`)).toBe('/view/abc-_9')
+    expect(shareRouteFrom(`${APP}#/view/abc/12\n`)).toBe('/view/abc/12')
+    expect(shareRouteFrom('http://localhost:5173/#/view/xyz')).toBe('/view/xyz')
+    expect(shareRouteFrom(`${APP}#/settings?invite=K7QM`)).toBeUndefined()
+    expect(shareRouteFrom('hello')).toBeUndefined()
   })
 
   it('refuses data that inflates to something huge', async () => {

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { createPlant } from '../../db/actions'
 import { clampInterval, parseDay, projectDue, ShareError, type SharedCollection, type SharedPlant } from '../../domain/share'
 import { addDays, daysBetween } from '../../domain/watering'
+import { inIosBrowser } from '../../lib/platform'
 import { readShareData } from '../../lib/shareLink'
 import { getSpecies, speciesLabel } from '../../species/catalog'
 import { EmptyState } from '../components/bits'
@@ -140,6 +141,7 @@ function SharedPlantDetail(props: { share: SharedCollection; plant: SharedPlant;
   const wiki = useWikiSummary(species?.wiki ?? plant.speciesName)
   const [addedId, setAddedId] = useState<string>()
   const [busy, setBusy] = useState(false)
+  const [handOff, setHandOff] = useState(inIosBrowser)
 
   const onAdd = async () => {
     setBusy(true)
@@ -199,6 +201,8 @@ function SharedPlantDetail(props: { share: SharedCollection; plant: SharedPlant;
             Open it
           </Link>
         </p>
+      ) : handOff ? (
+        <HandOffToApp onAddHere={() => setHandOff(false)} />
       ) : (
         <div className="stack">
           <button className="btn btn-primary" disabled={busy} onClick={() => void onAdd()}>
@@ -208,5 +212,58 @@ function SharedPlantDetail(props: { share: SharedCollection; plant: SharedPlant;
         </div>
       )}
     </article>
+  )
+}
+
+/**
+ * iPhone links always open in Safari, whose storage is separate from the Home
+ * Screen app, so a plant added here wouldn't show up there. Hand the link over
+ * by copy and paste (Plants → Open a shared link) instead.
+ */
+function HandOffToApp({ onAddHere }: { onAddHere: () => void }) {
+  const [copied, setCopied] = useState<boolean>()
+  const link = location.href
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(link)
+      setCopied(true)
+    } catch {
+      setCopied(false)
+    }
+  }
+
+  return (
+    <section className="card">
+      <button className="btn btn-primary" onClick={() => void copy()}>
+        {copied ? '✓ Link copied' : '+ Add in the fronds app'}
+      </button>
+      {copied === undefined && (
+        <p className="muted small">
+          Safari keeps its own copy of fronds, separate from the app on your Home Screen. This copies the link so you can
+          add the plant there.
+        </p>
+      )}
+      {copied === false && (
+        <label className="field">
+          <span>Copy this link</span>
+          <input className="input" readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
+        </label>
+      )}
+      {copied !== undefined && (
+        <>
+          <ol className="steps">
+            <li>Open fronds from your Home Screen.</li>
+            <li>
+              Go to <strong>Plants → Open a shared link</strong> and tap Paste.
+            </li>
+          </ol>
+          <p className="muted small">No fronds on your Home Screen yet? Tap Share → Add to Home Screen in Safari first.</p>
+        </>
+      )}
+      <button className="link small" onClick={onAddHere}>
+        Add it here in Safari instead
+      </button>
+    </section>
   )
 }

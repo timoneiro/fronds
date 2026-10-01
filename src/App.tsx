@@ -1,5 +1,6 @@
 import { HashRouter, Link, NavLink, Route, Routes, useMatch } from 'react-router'
 import { useAutoSync } from './sync/useAutoSync'
+import { OpenLinkPage } from './ui/pages/OpenLinkPage'
 import { PlantDetailPage } from './ui/pages/PlantDetailPage'
 import { PlantFormPage } from './ui/pages/PlantFormPage'
 import { PlantsPage } from './ui/pages/PlantsPage'
@@ -39,6 +40,7 @@ function Shell() {
           <Route path="/plants" element={<PlantsPage />} />
           <Route path="/plants/new" element={<PlantFormPage />} />
           <Route path="/plants/share" element={<SharePage />} />
+          <Route path="/plants/open" element={<OpenLinkPage />} />
           <Route path="/plants/:id" element={<PlantDetailPage />} />
           <Route path="/plants/:id/edit" element={<PlantFormPage />} />
           <Route path="/settings" element={<SettingsPage />} />

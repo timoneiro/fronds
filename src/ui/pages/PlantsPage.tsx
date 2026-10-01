@@ -47,6 +47,9 @@ export function PlantsPage() {
           <Link className="btn btn-primary" to="/plants/new">
             Add a plant
           </Link>
+          <Link className="link small" to="/plants/open">
+            Open a shared link
+          </Link>
         </EmptyState>
       ) : (
         <>
@@ -68,6 +71,9 @@ export function PlantsPage() {
             </section>
           ))}
           {filtered.length === 0 && <p className="muted">No plants match “{query}”.</p>}
+          <Link className="link small" to="/plants/open">
+            Open a shared link
+          </Link>
         </>
       )}
     </>

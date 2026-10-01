@@ -56,6 +56,15 @@ export async function shareLink(share: SharedCollection, appUrl = currentAppUrl(
   return appUrl + VIEW_ROUTE + toBase64Url(await compress(json))
 }
 
+/**
+ * Finds a share link in pasted text (often the whole chat message) and
+ * returns its in-app route, e.g. "/view/<data>/3". Undefined if there's none.
+ */
+export function shareRouteFrom(text: string): string | undefined {
+  const match = /#\/view\/([A-Za-z0-9_-]+)(\/\d+)?/.exec(text)
+  return match ? `/view/${match[1]}${match[2] ?? ''}` : undefined
+}
+
 /** Decodes the `<data>` part of a share link. Throws ShareError with a message for people. */
 export async function readShareData(data: string): Promise<SharedCollection> {
   let raw: unknown
