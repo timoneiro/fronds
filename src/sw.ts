@@ -12,19 +12,26 @@ declare const self: ServiceWorkerGlobalScope
 
 /*
  * Service worker. Keeps the same behaviour the generated one had in v0.1
- * (precache the app, auto-update, cache Wikipedia images) and adds push
- * reminders. It must stay at /sw.js with the same scope so installed apps
- * update in place.
+ * (precache the app, cache Wikipedia images) and adds push reminders. It must
+ * stay at /sw.js with the same scope so installed apps update in place.
+ *
+ * A new version waits until the page asks it to take over (src/lib/updates.ts),
+ * or until no page runs the old one. Until then the old version keeps serving
+ * its own files and handling reminders.
  */
 
-self.skipWaiting()
+self.addEventListener('message', (event) => {
+  if ((event.data as { type?: string } | null)?.type === 'SKIP_WAITING') void self.skipWaiting()
+})
 clientsClaim()
 cleanupOutdatedCaches()
 precacheAndRoute(self.__WB_MANIFEST)
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
 
+// Wikipedia serves thumbnails from thumb.wikimedia.org; summaries cached before that still use upload.
+const WIKI_IMAGE_HOSTS = ['upload.wikimedia.org', 'thumb.wikimedia.org']
 registerRoute(
-  ({ url }) => url.hostname === 'upload.wikimedia.org',
+  ({ url }) => WIKI_IMAGE_HOSTS.includes(url.hostname),
   new CacheFirst({
     cacheName: 'wiki-images',
     plugins: [

@@ -30,7 +30,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // New versions wait for the page to apply them (src/lib/updates.ts) instead of reloading it.
+      registerType: 'prompt',
       // Custom service worker (src/sw.ts) for push reminders; still emitted as sw.js.
       strategies: 'injectManifest',
       srcDir: 'src',

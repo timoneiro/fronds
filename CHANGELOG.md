@@ -9,6 +9,14 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.4.1 — 2026-10-01
+
+- **Updates ask first** — when a new version is ready while you're using fronds, a bar at the bottom
+  offers to reload, so nothing you're typing is lost. Tap Later to finish first, and it asks again
+  the next time you come back to the app.
+- fronds also checks for a new version when you come back to it, not only when it starts.
+- Plant pictures from Wikipedia now show when you're offline too.
+
 ## 0.4.0 — 2026-10-01
 
 - **What's new** — after an update, fronds now shows what changed. The full history is in

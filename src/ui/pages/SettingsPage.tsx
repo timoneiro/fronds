@@ -144,6 +144,9 @@ export function SettingsPage() {
           </a>
           <br />
           Plant descriptions and photos from Wikipedia. No account, no tracking.
+          <br />
+          Updates arrive on their own, like any website. Your plants stay on this device, and every
+          change is public on GitHub.
         </p>
         <p className="small">
           ☕ Enjoying fronds? It's free and always will be.{' '}
