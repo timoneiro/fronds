@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router'
 import { db } from '../../db/db'
 import { getReminderConfig, getSyncConfig, type SyncConfig } from '../../db/syncState'
 import type { DeviceSummary } from '../../domain/syncProtocol'
+import { shareUrl } from '../../lib/shareSheet'
 import { disconnectServer, runSync } from '../../sync/client'
 import {
   createHousehold,
@@ -44,21 +45,6 @@ function useAction() {
     }
   }
   return { busy, status, run }
-}
-
-/** Share sheet on phones, clipboard elsewhere, and a copyable prompt as the last resort. */
-async function shareLink(url: string, title: string): Promise<'shared' | 'copied' | undefined> {
-  try {
-    if (navigator.share) {
-      await navigator.share({ title, url })
-      return 'shared'
-    }
-    await navigator.clipboard.writeText(url)
-    return 'copied'
-  } catch (err) {
-    if ((err as Error).name !== 'AbortError') prompt('Copy this link:', url)
-    return undefined
-  }
 }
 
 export function SyncSection() {
@@ -234,7 +220,7 @@ function Invite({ householdName }: { householdName: string }) {
           <code className="invite-code">{invite.code}</code>
           <span className="muted small">Expires {new Date(invite.expiresAt).toLocaleDateString()}</span>
           <div className="row">
-            <button className="btn btn-small btn-primary" onClick={() => void shareLink(invite.link, `Join ${householdName} on fronds`).then((r) => r && setShared(r))}>
+            <button className="btn btn-small btn-primary" onClick={() => void shareUrl(invite.link, `Join ${householdName} on fronds`).then((r) => r && setShared(r))}>
               {shared === 'copied' ? '✓ Link copied' : '🔗 Share invite link'}
             </button>
             <button className="btn btn-small btn-ghost" onClick={() => setInvite(undefined)}>

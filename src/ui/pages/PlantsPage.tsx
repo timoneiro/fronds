@@ -29,9 +29,16 @@ export function PlantsPage() {
         <h2>
           My plants <span className="count">{items.length}</span>
         </h2>
-        <Link className="btn btn-primary btn-small" to="/plants/new">
-          + Add
-        </Link>
+        <div className="row">
+          {items.length > 0 && (
+            <Link className="btn btn-small" to="/plants/share">
+              Share
+            </Link>
+          )}
+          <Link className="btn btn-primary btn-small" to="/plants/new">
+            + Add
+          </Link>
+        </div>
       </div>
 
       {items.length === 0 ? (

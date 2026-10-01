@@ -2,8 +2,9 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { deleteEvent, deletePlant, updatePlant } from '../../db/actions'
 import { googleCalendarLink } from '../../domain/calendar'
 import { suggestInterval } from '../../domain/watering'
-import { getSpecies, LIGHT_LABEL, speciesLabel, TOXICITY_LABEL } from '../../species/catalog'
+import { getSpecies, speciesLabel } from '../../species/catalog'
 import { DueChip, EmptyState } from '../components/bits'
+import { AboutCard, CareCard } from '../components/SpeciesCards'
 import { WaterActions } from '../components/WaterActions'
 import { useGarden, useWikiSummary } from '../hooks'
 
@@ -82,40 +83,9 @@ export function PlantDetailPage() {
         </a>
       </section>
 
-      {species && (
-        <section className="card">
-          <h3>Care</h3>
-          {species.petToxicity !== 'non-toxic' ? (
-            <p className={`badge badge-${species.petToxicity}`}>⚠️ {TOXICITY_LABEL[species.petToxicity]}</p>
-          ) : (
-            <p className="badge badge-safe">🐾 {TOXICITY_LABEL['non-toxic']}</p>
-          )}
-          <dl className="facts">
-            <dt>Light</dt>
-            <dd>{LIGHT_LABEL[species.light]}</dd>
-            <dt>Water</dt>
-            <dd>About every {species.waterEveryDays} days</dd>
-            <dt>Humidity</dt>
-            <dd className="cap">{species.humidity}</dd>
-            <dt>Difficulty</dt>
-            <dd className="cap">{species.difficulty}</dd>
-          </dl>
-          <p>💡 {species.tip}</p>
-          <p className="muted small">General guidance only. Toxicity per ASPCA lists — ask a vet if in doubt.</p>
-        </section>
-      )}
+      {species && <CareCard species={species} />}
 
-      {wiki?.extract && (
-        <section className="card">
-          <h3>About</h3>
-          <p>{wiki.extract}</p>
-          {wiki.url && (
-            <a className="link small" href={wiki.url} target="_blank" rel="noreferrer">
-              Read more on Wikipedia
-            </a>
-          )}
-        </section>
-      )}
+      {wiki && <AboutCard wiki={wiki} />}
 
       {plant.notes && (
         <section className="card">

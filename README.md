@@ -19,6 +19,9 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
 - **Backup & transfer** — export a single JSON file and import it on another device. Imports *merge*
   record-by-record (newest edit wins, deletions included), so it's safe to import the same file twice.
   Automatic safety snapshots are kept before risky operations.
+- **Share links** — send a friend a read-only copy of your collection (pick rooms; watering dates and
+  notes are optional). The plants travel inside the link's `#` fragment, so no server ever sees them.
+  The friend can copy any plant into their own collection.
 - **Optional sync & push reminders** — run the small [fronds server](server/README.md) (one Docker
   container, e.g. on a home NAS) to share one collection between the phones in a household and get a
   daily notification when plants need water. One server can host several separate households;
