@@ -28,8 +28,10 @@ cleanupOutdatedCaches()
 precacheAndRoute(self.__WB_MANIFEST)
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
 
+// Wikipedia serves thumbnails from thumb.wikimedia.org; summaries cached before that still use upload.
+const WIKI_IMAGE_HOSTS = ['upload.wikimedia.org', 'thumb.wikimedia.org']
 registerRoute(
-  ({ url }) => url.hostname === 'upload.wikimedia.org',
+  ({ url }) => WIKI_IMAGE_HOSTS.includes(url.hostname),
   new CacheFirst({
     cacheName: 'wiki-images',
     plugins: [

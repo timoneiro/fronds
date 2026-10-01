@@ -15,6 +15,7 @@ Write for people who use the app, not for developers.
   offers to reload, so nothing you're typing is lost. Tap Later to finish first, and it asks again
   the next time you come back to the app.
 - fronds also checks for a new version when you come back to it, not only when it starts.
+- Plant pictures from Wikipedia now show when you're offline too.
 
 ## 0.4.0 — 2026-10-01
 
