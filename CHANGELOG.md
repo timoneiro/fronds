@@ -9,6 +9,20 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.5.0 — 2026-10-01
+
+- **Share your plants** — tap Share on the Plants page to send a friend a link to look at your
+  collection. They see your plants, their care info and when each one is next due, but can't change
+  anything. No account needed: everything is inside the link.
+- Choose which rooms to share, and whether to include watering dates and your notes (notes are left
+  out unless you turn them on). Photos and watering history are never shared.
+- The link is a copy from the day you send it and doesn't update. Send a new one any time.
+- Opening a shared link never mixes it with your own plants. Tap **Add to my plants** on one you like
+  to start your own with the same species and watering interval.
+- **On iPhone**, links open in Safari, which keeps its plants separate from the fronds app on your
+  Home Screen. So there, **Add in the fronds app** copies the link: open fronds from your Home Screen
+  and go to Plants → **Open a shared link** to paste it.
+
 ## 0.4.1 — 2026-10-01
 
 - **Updates ask first** — when a new version is ready while you're using fronds, a bar at the bottom

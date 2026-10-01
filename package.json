@@ -1,7 +1,7 @@
 {
   "name": "fronds",
   "private": true,
-  "version": "0.4.1",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

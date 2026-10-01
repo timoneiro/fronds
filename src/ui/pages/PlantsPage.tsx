@@ -29,9 +29,16 @@ export function PlantsPage() {
         <h2>
           My plants <span className="count">{items.length}</span>
         </h2>
-        <Link className="btn btn-primary btn-small" to="/plants/new">
-          + Add
-        </Link>
+        <div className="row">
+          {items.length > 0 && (
+            <Link className="btn btn-small" to="/plants/share">
+              Share
+            </Link>
+          )}
+          <Link className="btn btn-primary btn-small" to="/plants/new">
+            + Add
+          </Link>
+        </div>
       </div>
 
       {items.length === 0 ? (
@@ -39,6 +46,9 @@ export function PlantsPage() {
           <p>Your collection is empty.</p>
           <Link className="btn btn-primary" to="/plants/new">
             Add a plant
+          </Link>
+          <Link className="link small" to="/plants/open">
+            Open a shared link
           </Link>
         </EmptyState>
       ) : (
@@ -61,6 +71,9 @@ export function PlantsPage() {
             </section>
           ))}
           {filtered.length === 0 && <p className="muted">No plants match “{query}”.</p>}
+          <Link className="link small" to="/plants/open">
+            Open a shared link
+          </Link>
         </>
       )}
     </>
