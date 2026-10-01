@@ -30,6 +30,12 @@ the bump and send nothing. Preview the email with `node scripts/announce-release
 Repo secrets: `BUTTONDOWN_API_KEY` (sending) and `BUTTONDOWN_USERNAME` (the subscribe form, injected
 at build time as `VITE_BUTTONDOWN_USERNAME` — never commit it; locally use `.env.local`).
 
+## Content-Security-Policy
+The built app ships a CSP `<meta>` (defined in `vite.config.ts`, build only — the dev server needs
+inline scripts). Only the app's own scripts and styles run; images from `'self'`, `data:` and
+`*.wikimedia.org`; connections to any `https:` address (households enter their own sync server).
+Loading anything from a new host (API, image CDN, embed) means adding it there, or it's silently blocked.
+
 ## Principles
 - **Minimise accounts and API keys.** Core features work with no sign-in and no keys. Keyed or
   account-based services (Google Drive, plant-ID APIs) are optional add-ons.
