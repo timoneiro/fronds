@@ -1,6 +1,6 @@
 # fronds sync & reminder server. Build from the repo root:
 #   docker build -f server/Dockerfile -t fronds-server .
-FROM node:24-alpine
+FROM node:26-alpine
 
 WORKDIR /app
 ENV NODE_ENV=production \
