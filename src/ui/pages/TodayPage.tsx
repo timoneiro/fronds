@@ -3,6 +3,7 @@ import { waterPlants } from '../../db/actions'
 import { needsWater } from '../../domain/watering'
 import { EmptyState, PlantRow } from '../components/bits'
 import { WaterActions } from '../components/WaterActions'
+import { WhatsNewCard } from '../components/WhatsNew'
 import { useGarden } from '../hooks'
 
 export function TodayPage() {
@@ -26,6 +27,7 @@ export function TodayPage() {
 
   return (
     <>
+      <WhatsNewCard />
       <section>
         <div className="section-head">
           <h2>Needs water {due.length > 0 && <span className="count">{due.length}</span>}</h2>

@@ -23,11 +23,15 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
   container, e.g. on a home NAS) to share one collection between the phones in a household and get a
   daily notification when plants need water. One server can host several separate households;
   phones join with one-time invites and can be removed individually. No accounts, no third-party keys.
+- **What's new** — after an update the app shows what changed ([changelog](CHANGELOG.md)), and you can
+  subscribe in Settings to get a short email when a new version comes out.
 
 ## Privacy & data
 
 Everything is stored locally in your browser (IndexedDB). Nothing is sent anywhere except species
-look-ups to Wikipedia — and, only if you connect one, your own sync server. Browsers can evict site
+look-ups to Wikipedia — and, only if you connect one, your own sync server. If you subscribe to
+update emails, your address goes to [Buttondown](https://buttondown.com) (the newsletter service), never
+to the app; unsubscribe from any email. Browsers can evict site
 data under storage pressure — especially iOS Safari — so install the app to your home screen and
 **export a backup now and then**.
 

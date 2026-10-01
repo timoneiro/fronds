@@ -1,11 +1,14 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { downloadBlob, downloadJSON, exportBackup, importMerge, importReplace } from '../../db/backupIO'
 import { db } from '../../db/db'
 import { LINKS } from '../../lib/links'
+import { BUTTONDOWN_USERNAME } from '../../lib/newsletter'
 import { requestPersistentStorage } from '../../lib/storage'
 import { BackupError } from '../../domain/backup'
 import { buildICS } from '../../domain/calendar'
+import { SubscribeForm } from '../components/SubscribeForm'
 import { SyncSection } from '../components/SyncSection'
 import { useGarden } from '../hooks'
 
@@ -118,6 +121,18 @@ export function SettingsPage() {
             </button>
           </>
         )}
+      </section>
+
+      <section className="card">
+        <h3>Updates</h3>
+        <p className="muted small">
+          fronds updates itself. See what changed in each version
+          {BUTTONDOWN_USERNAME ? ', or get a short email when a new one comes out.' : '.'}
+        </p>
+        <Link className="btn btn-small" to="/whats-new">
+          ✨ What's new
+        </Link>
+        <SubscribeForm />
       </section>
 
       <section className="card">

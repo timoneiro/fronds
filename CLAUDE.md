@@ -20,6 +20,16 @@ non-destructive for existing data:
 - Take a snapshot (`takeSnapshot`) before any operation that removes or overwrites local data.
 - Ship through a PR (CI runs tests + builds); merging to `main` deploys to users immediately.
 
+## Releases & changelog
+Every user-facing change (feature or noticeable fix) bumps `version` in `package.json` and adds a
+`## x.y.z — YYYY-MM-DD` entry at the top of `CHANGELOG.md`, written for users, not developers
+(`src/domain/changelog.test.ts` fails CI if the entry is missing). That entry is the "What's new" card
+in the app, and after the merge to `main` deploys, `scripts/announce-release.ts` emails it to the
+Buttondown subscribers. It sends once per version, so internal-only changes (refactors, CI, docs) skip
+the bump and send nothing. Preview the email with `node scripts/announce-release.ts --dry-run`.
+Repo secrets: `BUTTONDOWN_API_KEY` (sending) and `BUTTONDOWN_USERNAME` (the subscribe form, injected
+at build time as `VITE_BUTTONDOWN_USERNAME` — never commit it; locally use `.env.local`).
+
 ## Principles
 - **Minimise accounts and API keys.** Core features work with no sign-in and no keys. Keyed or
   account-based services (Google Drive, plant-ID APIs) are optional add-ons.
