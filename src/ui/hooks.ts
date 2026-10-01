@@ -2,7 +2,9 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { db, isLive } from '../db/db'
 import type { CareEvent, Plant, WikiCacheEntry } from '../db/types'
+import { findRelease, unseenReleases, type Release } from '../domain/changelog'
 import { computeSchedule, type Schedule } from '../domain/watering'
+import { getLastSeenVersion, markReleasesSeen, RELEASES } from '../lib/releases'
 import { getWikiSummary } from '../species/wikipedia'
 
 export interface PlantWithSchedule {
@@ -52,4 +54,22 @@ export function useWikiSummary(title: string | undefined) {
     }
   }, [title])
   return loaded && loaded.title === title ? loaded.entry : undefined
+}
+
+/** Releases this device hasn't seen the notes for yet, newest first. */
+export function useUnseenReleases(): Release[] {
+  const state = useLiveQuery(async () => ({ lastSeen: await getLastSeenVersion(), hasPlants: (await db.plants.count()) > 0 }), [])
+  const isNewInstall = state !== undefined && !state.lastSeen && !state.hasPlants
+  useEffect(() => {
+    // Nothing is "new" on a fresh install.
+    if (isNewInstall) void markReleasesSeen()
+  }, [isNewInstall])
+
+  if (!state || isNewInstall) return []
+  if (!state.lastSeen) {
+    // Existing user updating from a version before "What's new": show just this release.
+    const current = findRelease(RELEASES, __APP_VERSION__)
+    return current ? [current] : []
+  }
+  return unseenReleases(RELEASES, state.lastSeen, __APP_VERSION__)
 }

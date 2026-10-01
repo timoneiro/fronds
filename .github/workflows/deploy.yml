@@ -29,9 +29,12 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - name: Preview release email
+        run: node scripts/announce-release.ts --dry-run
       - run: npx vite build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
+          VITE_BUTTONDOWN_USERNAME: ${{ secrets.BUTTONDOWN_USERNAME }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
@@ -47,3 +50,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Emails this version's CHANGELOG.md entry to subscribers once it's live (once per version).
+  announce:
+    if: github.ref == 'refs/heads/main'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/announce-release.ts
+        env:
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}

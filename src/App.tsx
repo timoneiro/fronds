@@ -5,6 +5,7 @@ import { PlantFormPage } from './ui/pages/PlantFormPage'
 import { PlantsPage } from './ui/pages/PlantsPage'
 import { SettingsPage } from './ui/pages/SettingsPage'
 import { TodayPage } from './ui/pages/TodayPage'
+import { WhatsNewPage } from './ui/pages/WhatsNewPage'
 
 export default function App() {
   useAutoSync()
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/plants/:id" element={<PlantDetailPage />} />
           <Route path="/plants/:id/edit" element={<PlantFormPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/whats-new" element={<WhatsNewPage />} />
         </Routes>
       </main>
       <nav className="tabbar">

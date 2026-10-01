@@ -274,6 +274,14 @@ h4 { margin: 0; font-size: 0.95rem; }
 .input-time { width: auto; }
 details summary { cursor: pointer; padding: 4px 0; }
 
+/* What's new */
+.whats-new { border-color: var(--accent); }
+.whats-new h3 { margin: 0; }
+.release-notes p, .release-notes ul { margin: 0 0 6px; }
+.release-notes ul { padding-left: 20px; }
+.release-notes li + li { margin-top: 4px; }
+.subscribe-email { flex: 1; min-width: 0; }
+
 .empty { text-align: center; padding: 48px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .big-emoji { font-size: 3rem; margin: 0; }
 
