@@ -147,6 +147,14 @@ tailnet), then follow step 3 to create their own household and step 4 to add the
 can't see your plants and you can't see theirs in the app. Only share the server code with people
 you trust to create households. As the server's owner, you can technically read the data file.
 
+### Moving the server to a new address
+
+If the server is reached at a different address (a new tailnet, machine name, port or reverse
+proxy), each phone goes to **Settings → Sync & reminders → Change address** and enters the new
+one. Phones keep their household and access, and nothing is uploaded again. Moving to a different
+machine works the same way, as long as you copy the whole `data` folder over first: a fresh server
+doesn't know your household, and fronds refuses to switch to it.
+
 ### Updating and backups
 
 - **Update:** `docker compose pull && docker compose up -d`, or redeploy in your NAS app

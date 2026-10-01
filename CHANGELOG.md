@@ -9,6 +9,15 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.6.0 — 2026-10-01
+
+- **Change your server's address** — if the sync server you use is now reached at a new address
+  (for example, it moved to a different Tailscale network), go to **Settings → Sync & reminders →
+  Change address** and enter the new one. Your household, plants and reminders stay as they are,
+  and nothing needs to be joined again. Each phone in the household does this once.
+- fronds checks that your household really is at the new address before switching, so a typo
+  can't disconnect you.
+
 ## 0.5.0 — 2026-10-01
 
 - **Share your plants** — tap Share on the Plants page to send a friend a link to look at your

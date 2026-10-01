@@ -107,7 +107,8 @@ async function doSync(): Promise<boolean> {
     response = await api<SyncResponse>(cfg, '/api/sync', request)
   } catch (err) {
     const latest = await getSyncConfig()
-    if (latest) await setSyncConfig({ ...latest, lastError: (err as Error).message, lastErrorStatus: (err as SyncError).status })
+    // A failure at an address this phone has since moved away from isn't news.
+    if (latest?.url === cfg.url) await setSyncConfig({ ...latest, lastError: (err as Error).message, lastErrorStatus: (err as SyncError).status })
     throw err
   }
 

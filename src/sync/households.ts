@@ -9,7 +9,7 @@ import {
   type JoinRequest,
   type ServerHello,
 } from '../domain/syncProtocol'
-import { api, normaliseServerUrl, runSync, SyncError } from './client'
+import { api, fetchServerInfo, normaliseServerUrl, runSync, SyncError } from './client'
 import { disableReminders } from './push'
 
 /*
@@ -68,6 +68,40 @@ async function current() {
   if (!cfg) throw new SyncError('Not connected to a household')
   return cfg
 }
+
+/**
+ * The server is now reached at a different address (e.g. it moved to another
+ * tailnet). Only the address changes: this phone keeps its token, household,
+ * sync position and reminders. The new address must answer for the same
+ * household, so a typo or an empty new server can't take its place.
+ */
+export async function changeServerAddress(urlInput: string) {
+  const cfg = await current()
+  const url = normaliseServerUrl(urlInput)
+  if (url === cfg.url) return
+  let info
+  try {
+    info = await fetchServerInfo({ url, key: cfg.key })
+  } catch (err) {
+    if (err instanceof SyncError && err.status === 401) throw new SyncError(notThere(cfg))
+    throw err
+  }
+  if (cfg.household && info.household?.id !== cfg.household.id) throw new SyncError(notThere(cfg))
+  const latest = await current() // a sync may have moved the cursor meanwhile
+  await setSyncConfig({
+    ...latest,
+    url,
+    household: info.household ?? latest.household,
+    timezone: info.timezone,
+    lastError: undefined,
+    lastErrorStatus: undefined,
+  })
+  await runSync().catch(() => undefined) // failures are recorded in the config and shown in Settings
+}
+
+const notThere = (cfg: SyncConfig) =>
+  `${cfg.household ? `“${cfg.household.name}”` : 'Your household'} isn't on the server at that address. ` +
+  "If you set up a new server, copy the old one's data folder to it first"
 
 export async function createInvite(): Promise<InviteResponse & { link: string }> {
   const cfg = await current()

@@ -7,6 +7,7 @@ import type { DeviceSummary } from '../../domain/syncProtocol'
 import { shareUrl } from '../../lib/shareSheet'
 import { disconnectServer, runSync } from '../../sync/client'
 import {
+  changeServerAddress,
   createHousehold,
   createInvite,
   defaultDeviceLabel,
@@ -144,6 +145,7 @@ function ConnectForm() {
 function Connected({ config }: { config: SyncConfig }) {
   const pending = useLiveQuery(() => db.outbox.count(), []) ?? 0
   const sync = useAction()
+  const [editingAddress, setEditingAddress] = useState(false)
   const revoked = config.lastErrorStatus === 401
   const host = new URL(config.url).host
 
@@ -195,14 +197,51 @@ function Connected({ config }: { config: SyncConfig }) {
         <button className="btn btn-small" disabled={sync.busy} onClick={() => void sync.run(runSync, 'Synced.')}>
           🔄 Sync now
         </button>
+        <button className="btn btn-small btn-ghost" onClick={() => setEditingAddress(true)}>
+          Change address
+        </button>
         <button className="btn btn-small btn-ghost" onClick={onLeave}>
           Leave household
         </button>
       </div>
+      {editingAddress && <ChangeAddress url={config.url} onDone={() => setEditingAddress(false)} />}
       {config.household && <Invite householdName={config.household.name} />}
       {config.household && <Devices />}
       <Reminders timezone={config.timezone} />
     </div>
+  )
+}
+
+function ChangeAddress({ url, onDone }: { url: string; onDone: () => void }) {
+  const [address, setAddress] = useState(url)
+  const action = useAction()
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    void action.run(async () => {
+      await changeServerAddress(address)
+      onDone()
+    })
+  }
+
+  return (
+    <form className="stack subsection" onSubmit={onSubmit}>
+      <h4>Server address</h4>
+      <p className="muted small">
+        If your server is now reached at a new address (for example, it moved to a different tailnet), enter it here.
+        Your household, plants and reminders stay the same. Each phone in the household needs the new address.
+      </p>
+      <input className="input" type="url" inputMode="url" required value={address} onChange={(e) => setAddress(e.target.value)} autoComplete="off" aria-label="New server address" />
+      {action.status && <p className={`notice notice-${action.status.kind}`}>{action.status.text}</p>}
+      <div className="row">
+        <button className="btn btn-small btn-primary" disabled={action.busy}>
+          {action.busy ? 'Checking…' : 'Save address'}
+        </button>
+        <button type="button" className="btn btn-small btn-ghost" onClick={onDone}>
+          Cancel
+        </button>
+      </div>
+    </form>
   )
 }
 

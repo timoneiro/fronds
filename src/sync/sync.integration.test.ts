@@ -57,7 +57,7 @@ describe('sync client ↔ server', async () => {
   const { importReplace } = await import('../db/backupIO')
   const { getSyncConfig } = await import('../db/syncState')
   const { runSync, SyncError } = await import('./client')
-  const { createHousehold, createInvite } = await import('./households')
+  const { changeServerAddress, createHousehold, createInvite } = await import('./households')
 
   let household: () => Household
   let partner: DeviceCredentials // a second phone in the same household
@@ -122,6 +122,36 @@ describe('sync client ↔ server', async () => {
     await runSync()
     expect(await db.plants.count()).toBe(2)
     expect(Object.keys(household().plants)).toHaveLength(2)
+  })
+
+  it('changing the server address keeps the household, sync position and outbox', async () => {
+    const before = (await getSyncConfig())!
+    const moved = url.replace('127.0.0.1', 'localhost') // same server, another address
+    await addEvent('p1', 'water')
+    await changeServerAddress(moved)
+    const after = await getSyncConfig()
+    expect(after).toMatchObject({ url: moved, key: before.key, household: before.household, initialUploadDone: true })
+    expect(after!.cursor).toBeGreaterThan(before.cursor)
+    expect(await db.outbox.count()).toBe(0)
+    expect(Object.keys(household().events)).toHaveLength(2)
+  })
+
+  it('refuses an address where the household is unknown, keeping the old one', async () => {
+    const emptyDir = await mkdtemp(join(tmpdir(), 'fronds-sync-'))
+    const emptyStore = new Store(emptyDir)
+    await emptyStore.load()
+    const other = createApp(await loadConfig({ DATA_DIR: emptyDir }), emptyStore, async () => 'sent').listen(0)
+    await new Promise((r) => other.once('listening', r))
+    try {
+      const before = await getSyncConfig()
+      const otherUrl = `http://127.0.0.1:${(other.address() as AddressInfo).port}`
+      await expect(changeServerAddress(otherUrl)).rejects.toThrow(/isn't on the server at that address/)
+      await expect(changeServerAddress('http://127.0.0.1:1')).rejects.toBeInstanceOf(SyncError)
+      expect(await getSyncConfig()).toEqual(before)
+    } finally {
+      other.close()
+      await rm(emptyDir, { recursive: true, force: true })
+    }
   })
 
   it('a phone removed from the household keeps its plants and learns it was removed', async () => {
