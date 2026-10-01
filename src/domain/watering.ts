@@ -2,6 +2,15 @@ import type { CareEvent, Plant } from '../db/types.ts'
 
 const DAY_MS = 86_400_000
 
+export const MIN_INTERVAL_DAYS = 1
+export const MAX_INTERVAL_DAYS = 90
+
+/** Cleans typed watering-interval text: digits only, no leading zeros, capped at the max. */
+export function cleanIntervalInput(text: string): string {
+  const digits = text.replace(/\D/g, '').replace(/^0+/, '')
+  return digits && String(Math.min(MAX_INTERVAL_DAYS, Number(digits)))
+}
+
 export type WaterStatus = 'never' | 'overdue' | 'today' | 'soon' | 'ok'
 
 export interface Schedule {

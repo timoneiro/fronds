@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { CareEvent, Plant } from '../db/types.ts'
-import { computeSchedule, daysBetween, suggestInterval } from './watering'
+import { cleanIntervalInput, computeSchedule, daysBetween, suggestInterval } from './watering'
 
 const T = '2026-01-01T00:00:00.000Z'
 const plant = (interval = 7): Plant => ({ id: 'p1', name: 'Monty', wateringIntervalDays: interval, createdAt: T, updatedAt: T })
@@ -73,5 +73,25 @@ describe('suggestInterval', () => {
   it('stays quiet when the setting is already close', () => {
     const events = [1, 8, 15, 22].map((d) => ev('water', day(d)))
     expect(suggestInterval(plant(8), events)).toBeUndefined()
+  })
+})
+
+describe('cleanIntervalInput', () => {
+  it('keeps whole numbers of days', () => {
+    expect(cleanIntervalInput('7')).toBe('7')
+    expect(cleanIntervalInput('14')).toBe('14')
+  })
+  it('drops decimal points, signs and other characters', () => {
+    expect(cleanIntervalInput('7.')).toBe('7')
+    expect(cleanIntervalInput('7,')).toBe('7')
+    expect(cleanIntervalInput('-3')).toBe('3')
+  })
+  it('never yields 0', () => {
+    expect(cleanIntervalInput('0')).toBe('')
+    expect(cleanIntervalInput('00')).toBe('')
+    expect(cleanIntervalInput('07')).toBe('7')
+  })
+  it('caps at the maximum interval', () => {
+    expect(cleanIntervalInput('120')).toBe('90')
   })
 })

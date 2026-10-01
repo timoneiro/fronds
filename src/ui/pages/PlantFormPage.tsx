@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router'
 import { createPlant, updatePlant, type PlantInput } from '../../db/actions'
 import { db, isLive } from '../../db/db'
 import type { Plant } from '../../db/types'
+import { cleanIntervalInput, MAX_INTERVAL_DAYS, MIN_INTERVAL_DAYS } from '../../domain/watering'
 import { resizeImage } from '../../lib/image'
 import { getSpecies } from '../../species/catalog'
 import { SpeciesPicker, type SpeciesChoice } from '../components/SpeciesPicker'
@@ -36,10 +37,27 @@ function PlantForm({ existing }: { existing?: Plant }) {
     return rest
   })
   const [intervalTouched, setIntervalTouched] = useState(editing)
+  // What's typed in the interval box; null shows the saved value. Lets the box be briefly empty mid-edit.
+  const [intervalText, setIntervalText] = useState<string | null>(null)
   const [lastWatered, setLastWatered] = useState<string>(todayInput())
   const [photoBusy, setPhotoBusy] = useState(false)
 
   const set = <K extends keyof PlantInput>(key: K, value: PlantInput[K]) => setForm((f) => ({ ...f, [key]: value }))
+
+  const setIntervalDays = (days: number) => {
+    setIntervalTouched(true)
+    setIntervalText(null)
+    set('wateringIntervalDays', Math.min(MAX_INTERVAL_DAYS, Math.max(MIN_INTERVAL_DAYS, days)))
+  }
+
+  const onIntervalType = (text: string) => {
+    const clean = cleanIntervalInput(text)
+    setIntervalText(clean)
+    if (clean) {
+      setIntervalTouched(true)
+      set('wateringIntervalDays', Number(clean))
+    }
+  }
 
   const catalogSpecies = getSpecies(form.speciesId)
   const speciesLabel = catalogSpecies?.commonName ?? form.speciesName
@@ -113,17 +131,19 @@ function PlantForm({ existing }: { existing?: Plant }) {
       <div className="field">
         <span>Water every</span>
         <div className="stepper">
-          <button type="button" className="btn btn-small" onClick={() => { setIntervalTouched(true); set('wateringIntervalDays', Math.max(1, form.wateringIntervalDays - 1)) }} aria-label="Fewer days">−</button>
+          <button type="button" className="btn btn-small" onClick={() => setIntervalDays(form.wateringIntervalDays - 1)} aria-label="Fewer days">−</button>
           <input
             className="input input-number"
-            type="number"
-            min={1}
-            max={90}
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
             required
-            value={form.wateringIntervalDays}
-            onChange={(e) => { setIntervalTouched(true); set('wateringIntervalDays', Number(e.target.value)) }}
+            aria-label="Days between waterings"
+            value={intervalText ?? form.wateringIntervalDays}
+            onChange={(e) => onIntervalType(e.target.value)}
+            onBlur={() => setIntervalText(null)}
           />
-          <button type="button" className="btn btn-small" onClick={() => { setIntervalTouched(true); set('wateringIntervalDays', form.wateringIntervalDays + 1) }} aria-label="More days">+</button>
+          <button type="button" className="btn btn-small" onClick={() => setIntervalDays(form.wateringIntervalDays + 1)} aria-label="More days">+</button>
           <span>days</span>
         </div>
         {catalogSpecies && (
