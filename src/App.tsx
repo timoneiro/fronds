@@ -1,5 +1,6 @@
 import { HashRouter, NavLink, Route, Routes } from 'react-router'
 import { useAutoSync } from './sync/useAutoSync'
+import { UpdateBanner } from './ui/components/UpdateBanner'
 import { PlantDetailPage } from './ui/pages/PlantDetailPage'
 import { PlantFormPage } from './ui/pages/PlantFormPage'
 import { PlantsPage } from './ui/pages/PlantsPage'
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/whats-new" element={<WhatsNewPage />} />
         </Routes>
       </main>
+      <UpdateBanner />
       <nav className="tabbar">
         <NavLink to="/" end>
           <span aria-hidden>💧</span>Today
