@@ -35,6 +35,17 @@ to the app; unsubscribe from any email. Browsers can evict site
 data under storage pressure — especially iOS Safari — so install the app to your home screen and
 **export a backup now and then**.
 
+## Updates & security
+
+fronds updates itself, like any website: when a new version is published, the app picks it up the
+next time it's opened. Your plants are never touched by an update. They stay in your browser, and
+data changes between versions are designed to keep everything you've stored. All the code is
+public in this repo, changes reach the app only through reviewed pull requests that pass the
+automated tests, and every user-facing change is listed in the [changelog](CHANGELOG.md) and in the
+app's *What's new*.
+
+Found a security problem? Please report it privately, as described in [SECURITY.md](SECURITY.md).
+
 ## Run your own server (sync & reminders)
 
 The app works on its own. Run a fronds server if you want **the phones in your home to share one
