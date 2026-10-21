@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CATALOG, searchCatalog } from './catalog'
+import { CATALOG, findByScientificName, searchCatalog } from './catalog'
 
 describe('catalog', () => {
   it('has unique ids and sane intervals', () => {
@@ -12,5 +12,13 @@ describe('catalog', () => {
     expect(searchCatalog('sansevieria')[0].id).toBe('dracaena-trifasciata')
     expect(searchCatalog('Epipremnum')[0].id).toBe('epipremnum-aureum')
     expect(searchCatalog('   ')).toEqual([])
+  })
+
+  it('finds by scientific name, falling back to the genus', () => {
+    expect(findByScientificName('Monstera deliciosa')?.id).toBe('monstera-deliciosa')
+    expect(findByScientificName('monstera DELICIOSA')?.id).toBe('monstera-deliciosa')
+    expect(findByScientificName('Spathiphyllum wallisii')?.id).toBe('spathiphyllum')
+    expect(findByScientificName('Quercus robur')).toBeUndefined()
+    expect(findByScientificName('')).toBeUndefined()
   })
 })

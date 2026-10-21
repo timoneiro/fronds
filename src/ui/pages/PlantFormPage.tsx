@@ -7,6 +7,8 @@ import type { Plant } from '../../db/types'
 import { cleanIntervalInput, MAX_INTERVAL_DAYS, MIN_INTERVAL_DAYS } from '../../domain/watering'
 import { resizeImage } from '../../lib/image'
 import { getSpecies } from '../../species/catalog'
+import { IdentifyFromPhoto } from '../components/IdentifyFromPhoto'
+import { usePlantNetKey } from '../hooks'
 import { SpeciesPicker, type SpeciesChoice } from '../components/SpeciesPicker'
 
 const DEFAULT_INTERVAL = 7
@@ -41,6 +43,7 @@ function PlantForm({ existing }: { existing?: Plant }) {
   const [intervalText, setIntervalText] = useState<string | null>(null)
   const [lastWatered, setLastWatered] = useState<string>(todayInput())
   const [photoBusy, setPhotoBusy] = useState(false)
+  const plantnetKey = usePlantNetKey()
 
   const set = <K extends keyof PlantInput>(key: K, value: PlantInput[K]) => setForm((f) => ({ ...f, [key]: value }))
 
@@ -74,7 +77,7 @@ function PlantForm({ existing }: { existing?: Plant }) {
         wateringIntervalDays: intervalTouched ? f.wateringIntervalDays : choice.species.waterEveryDays,
       }))
     } else {
-      setForm((f) => ({ ...f, speciesId: undefined, speciesName: choice.speciesName, name: f.name || choice.speciesName }))
+      setForm((f) => ({ ...f, speciesId: undefined, speciesName: choice.speciesName, name: f.name || (choice.suggestedName ?? choice.speciesName) }))
     }
   }
 
@@ -115,6 +118,15 @@ function PlantForm({ existing }: { existing?: Plant }) {
       <div className="field">
         <span>Species</span>
         <SpeciesPicker label={speciesLabel} onChoose={onSpecies} />
+        {plantnetKey && !speciesLabel && (
+          <IdentifyFromPhoto
+            apiKey={plantnetKey}
+            onChoose={(choice, file) => {
+              onSpecies(choice)
+              if (!form.photo) void onPhoto(file)
+            }}
+          />
+        )}
       </div>
 
       <label className="field">

@@ -9,6 +9,17 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.7.0 — 2026-10-21
+
+- **Identify a plant from a photo** — don't know what your plant is called? On a new or existing
+  plant, tap **📷 Identify from photo** under the species box, take or choose a photo, and fronds
+  suggests up to three likely species. Tap one to fill in the species, name and watering interval.
+- Identification uses Pl@ntNet, a free plant-identification service. It needs a free Pl@ntNet
+  account and your own API key (500 identifications a day). Get the key at my.plantnet.org and paste
+  it under **Settings → Plant identification (optional)**. The key stays on this phone only.
+- This is optional. Without a key, nothing changes. When you tap Identify, the photo is sent to
+  Pl@ntNet.
+
 ## 0.6.0 — 2026-10-01
 
 - **Change your server's address** — if the sync server you use is now reached at a new address

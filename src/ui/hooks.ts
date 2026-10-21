@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useMemo, useState } from 'react'
-import { db, isLive } from '../db/db'
+import { db, getSetting, isLive } from '../db/db'
 import type { CareEvent, Plant, WikiCacheEntry } from '../db/types'
 import { findRelease, unseenReleases, type Release } from '../domain/changelog'
 import { computeSchedule, type Schedule } from '../domain/watering'
@@ -54,6 +54,11 @@ export function useWikiSummary(title: string | undefined) {
     }
   }, [title])
   return loaded && loaded.title === title ? loaded.entry : undefined
+}
+
+/** The user's own Pl@ntNet API key (local setting, never synced or backed up). */
+export function usePlantNetKey(): string | undefined {
+  return useLiveQuery(() => getSetting<string>('plantnetKey'), [])
 }
 
 /** Releases this device hasn't seen the notes for yet, newest first. */
