@@ -108,7 +108,7 @@ export const CATALOG: Species[] = [
   s({ id: 'tillandsia', commonName: 'Air plant', scientificName: 'Tillandsia', aliases: ['Tillandsia'], light: 'bright-indirect', waterEveryDays: 7, humidity: 'medium', petToxicity: 'non-toxic', difficulty: 'easy', wiki: 'Tillandsia', tip: '"Watering" = soak 20–30 min, then shake off and dry upside-down within 4 hours.' }),
 ]
 
-const norm = (x: string) => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+export const norm = (x: string) => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
 
 /** Display name of a plant's species, from the catalog or free text. */
 export function speciesLabel(plant: Pick<Plant, 'speciesId' | 'speciesName'>): string | undefined {
