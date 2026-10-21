@@ -68,6 +68,10 @@ Examples:
 2. **Batch A: aroids and climbers**
    - Change: append these lines to `CATALOG`, and add a test that `findByScientificName` finds
      `Philodendron erubescens` → `philodendron-erubescens` and `Philodendron xanadu` → `thaumatophyllum-xanadu`, and that `searchCatalog('pink princess')[0].id` is `philodendron-erubescens`.
+     Cebu Blue pothos ties with golden pothos on the query "Epipremnum" and sorts first, so in the
+     existing test "finds by common name, alias and scientific name" change
+     `searchCatalog('Epipremnum')` to `searchCatalog('Epipremnum aureum')` (same expected id). This is
+     the only change allowed to an existing assertion.
      ```ts
        s({ id: 'philodendron-erubescens', commonName: 'Blushing philodendron', scientificName: 'Philodendron erubescens', aliases: ['Pink Princess', 'Birkin', 'Imperial Red', 'Prince of Orange'], light: 'bright-indirect', waterEveryDays: 7, humidity: 'medium', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Philodendron erubescens', tip: 'Water when the top 2–3 cm are dry; more light keeps pink and red variegation bright.' }),
        s({ id: 'epipremnum-pinnatum', commonName: 'Cebu Blue pothos', scientificName: 'Epipremnum pinnatum', aliases: ['Cebu Blue', 'Dragon-tail plant', 'Centipede tongavine'], light: 'bright-indirect', waterEveryDays: 7, humidity: 'medium', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Epipremnum pinnatum', tip: 'Let the top half of the soil dry; give it something to climb and the leaves grow bigger.' }),
