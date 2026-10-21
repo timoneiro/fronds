@@ -45,7 +45,9 @@ optional, and the app must keep working without it.
 - **Watering amount and method** notes per plant (bottom watering, soak).
 - **Propagation tracking**: cuttings linked to a parent plant, a "family tree".
 - **Purchase info**: date, shop, price.
-- **Grow the bundled catalog** to about 150 species. Accept community PRs, and maybe split it into JSON.
+- **Grow the bundled catalog**: the first batch (to 100 species) is specced in `grow-catalog.md`.
+  Later batches, the species ASPCA doesn't list (needs an "unknown" pet-safety value), and a JSON
+  split stay parked.
 
 ### Convenience
 - **Home screen shortcuts** (manifest `shortcuts`: Today, Add plant) and an **app icon badge**
