@@ -65,4 +65,4 @@ Loading anything from a new host (API, image CDN, embed) means adding it there, 
 On Windows Git Bash, set `MSYS_NO_PATHCONV=1` when passing `BASE_PATH=/fronds/` to a local build.
 
 ## Ideas
-`FEATURE_IDEAS.md` is a local, gitignored backlog — add future ideas there, not in issues or the README.
+Future ideas live in `specs/`: `specs/BACKLOG.md` for parked ideas, and one `specs/<feature>.md` per specced feature (see the `/spec` skill). Build only specs whose issue has the `agent-ready` label (`/build` checks it); update a spec to match what shipped. Adding a synced table: `specs/new-table-checklist.md` (after `specs/synced-tables.md` ships).
