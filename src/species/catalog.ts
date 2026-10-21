@@ -119,6 +119,19 @@ export function getSpecies(id: string | undefined): Species | undefined {
   return id ? CATALOG.find((x) => x.id === id) : undefined
 }
 
+/**
+ * Finds a species by scientific name (case-insensitive). Falls back to the genus
+ * (first word) for genus-level entries such as `Spathiphyllum`.
+ */
+export function findByScientificName(name: string): Species | undefined {
+  const q = norm(name)
+  if (!q) return undefined
+  const exact = CATALOG.find((x) => norm(x.scientificName) === q)
+  if (exact) return exact
+  const genus = q.split(/\s+/)[0]
+  return CATALOG.find((x) => !/\s/.test(norm(x.scientificName)) && norm(x.scientificName) === genus)
+}
+
 /** Ranked search over common names, scientific names and aliases. */
 export function searchCatalog(query: string, limit = 8): Species[] {
   const q = norm(query)
