@@ -9,6 +9,13 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.7.1 — 2026-10-21
+
+- **Plant identification setup fixed** — Pl@ntNet only accepts your key from websites you allow.
+  **Settings → Plant identification** now walks you through it: open your Pl@ntNet API key
+  settings, tick **expose my API key**, and paste the fronds address (there's a **Copy** button)
+  under **Authorized domains**. If Pl@ntNet said it didn't accept your key, this fixes it.
+
 ## 0.7.0 — 2026-10-21
 
 - **Identify a plant from a photo** — don't know what your plant is called? On a new or existing

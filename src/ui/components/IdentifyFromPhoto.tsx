@@ -10,7 +10,7 @@ interface Props {
 
 const ERROR_TEXT: Record<PlantNetError['kind'], string> = {
   'not-a-plant': "That doesn't look like a plant. Try a closer photo of the leaves or a flower.",
-  'bad-key': "Pl@ntNet didn't accept your key. Check it in Settings.",
+  'bad-key': "Pl@ntNet didn't accept your key. Check the key and your Pl@ntNet authorized domains (see Settings).",
   quota: "You've used today's free identifications. Try again tomorrow.",
   network: "Couldn't reach Pl@ntNet. Try again later.",
 }
