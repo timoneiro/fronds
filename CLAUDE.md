@@ -54,7 +54,7 @@ Loading anything from a new host (API, image CDN, embed) means adding it there, 
 - `src/db/` — Dexie schema, write actions, backup IO, snapshots, local settings.
 - `src/sync/` — sync client, push subscription, reminder check. `client.ts`/`reminderCheck.ts` run in
   the service worker too: no DOM APIs there (type-checked by `tsconfig.sw.json`).
-- `src/species/` — bundled catalog (ASPCA pet toxicity) + Wikipedia client.
+- `src/species/` — bundled catalog (ASPCA pet toxicity) + Wikipedia, iNaturalist and Pl@ntNet clients.
 - `src/ui/` — React pages/components; plain CSS tokens in `src/index.css` (light + dark).
 - `server/` — Node HTTP server, JSON-file store, Web Push. Image: `ghcr.io/timoneiro/fronds-server`.
 
