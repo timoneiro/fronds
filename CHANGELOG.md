@@ -9,6 +9,16 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.9.0 — 2026-10-21
+
+- **39 more plants in the care guide** — the guide now covers 100 species, including calla lily,
+  Pink Princess philodendron, Venus flytrap, Meyer lemon and staghorn fern. Each one comes with
+  light, watering, humidity, difficulty, pet toxicity and a care tip.
+- Cultivar names find their species: search for "Pink Princess" or "Cebu Blue" and you get
+  Blushing philodendron or Cebu Blue pothos.
+- Photo ID and online search now show **In catalog** for more plants, so you can choose them to
+  set up care defaults.
+
 ## 0.8.0 — 2026-10-21
 
 - **Find your plant by the name you know** — the species search now finds plants by their common
