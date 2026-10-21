@@ -1,6 +1,6 @@
 # Identify a plant from a photo (Pl@ntNet, own key)
 
-Status: building
+Status: shipped (0.7.0)
 Issue: https://github.com/timoneiro/fronds/issues/49
 Builds after: none
 
@@ -198,3 +198,10 @@ the interval to 7 days, and the Photo field (empty before) now shows the photo.
 - No overlap that needs ordering. `wishlist` also uses `SpeciesChoice`, but the new field is optional.
   `photo-timeline` uses `resizeImage`, whose signature is unchanged. Several draft specs edit
   `PlantFormPage.tsx` in different sections, so expect only textual merge conflicts.
+- As shipped (0.7.0):
+  - Tests also cover 403 → `bad-key` and a match with no common name. A 200 response that can't be
+    parsed counts as `network`.
+  - Importing a backup keeps the key, because `importReplace` doesn't clear `settings`.
+  - Not done (follow-ups): the Identify button isn't dimmed while it works (there's no `.btn.disabled`
+    style), and a 200 response with no results shows an empty list with no "No matches" line. The
+    README privacy section isn't updated (the issue lists it, but the spec didn't).
