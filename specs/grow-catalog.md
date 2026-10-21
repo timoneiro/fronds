@@ -1,6 +1,6 @@
 # Grow the care catalog to 100 species
 
-Status: building
+Status: shipped (0.9.0)
 Issue: https://github.com/timoneiro/fronds/issues/57
 Builds after: none
 
@@ -213,3 +213,8 @@ Examples:
 - Care values are indoor baselines in the same style as the existing entries. Review them in the
   spec PR, since the executor copies them as they are.
 - No overlap with other specs: data only, no shared helpers or Dexie versions.
+- Search ties: `searchCatalog` breaks equal scores by common name, so some new entries now come
+  first for one-word queries ("Epipremnum" → Cebu Blue pothos, "snake" → Cylindrical snake plant,
+  "ficus" → Creeping fig, "cactus" → *Euphorbia trigona*). The two existing tests that hit this now
+  query the full name. A later spec could make ties prefer older entries; future catalog batches
+  should check existing `searchCatalog` assertions against the new names first.
