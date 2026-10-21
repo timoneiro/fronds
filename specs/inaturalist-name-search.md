@@ -1,7 +1,7 @@
 # Find species by any common name (iNaturalist search)
 
 Status: ready
-Issue: <issue link>
+Issue: https://github.com/timoneiro/fronds/issues/51
 Builds after: plant-id-from-photo
 
 ## Problem
