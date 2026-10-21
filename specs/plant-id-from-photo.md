@@ -160,8 +160,12 @@ the interval to 7 days, and the Photo field (empty before) now shows the photo.
 6. **Version and changelog**
    - Change: minor bump in `package.json` and `package-lock.json`, and a `CHANGELOG.md` entry
      ("Identify a plant from a photo", which mentions the free Pl@ntNet key and that it is optional).
+     In README "Privacy & data", insert this sentence right after the one ending "your own sync
+     server.": "If you add a Pl@ntNet key, a photo is sent to Pl@ntNet only when you tap Identify."
+     Leave the existing sentence unchanged (`inaturalist-name-search` edits it later).
    - Depends on: 5
-   - Done when: `npm test` and `npm run build` pass.
+   - Done when: `npm test` and `npm run build` pass, and `grep -n "sent to Pl@ntNet only when you tap
+     Identify" README.md` matches.
    - Executor: haiku
 
 ## Acceptance criteria
@@ -175,6 +179,7 @@ the interval to 7 days, and the Photo field (empty before) now shows the photo.
       its Wikipedia description.
 - [ ] An existing plant photo is not replaced by the identify photo.
 - [ ] An exported backup doesn't contain the key text.
+- [ ] The README privacy section says photos go to Pl@ntNet only when you tap Identify.
 
 ## Verification
 - `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` all pass.
