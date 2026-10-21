@@ -1,6 +1,6 @@
 # Identify a plant from a photo (Pl@ntNet, own key)
 
-Status: ready
+Status: building
 Issue: https://github.com/timoneiro/fronds/issues/49
 Builds after: none
 
