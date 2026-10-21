@@ -17,8 +17,8 @@ optional, and the app must keep working without it.
   Calendar scope is sensitive (Google verification). `calendar-feed` covers most of this keylessly.
 - **Weather-aware intervals** (Open-Meteo, keyless): heatwaves shorten balcony plants' intervals.
   Needs a CSP `connect-src` entry and location.
-- **Plant ID from a photo**: Pl@ntNet (free non-commercial key, 500/day), with the user's own key or
-  proxied via the self-hosted server so the key never ships in the client.
+- **Plant ID from a photo**: specced in `plant-id-from-photo.md` (Pl@ntNet, each user's own key).
+  Proxying a key via the self-hosted server stays parked.
 - **Health diagnosis from a photo**: Plant.id / Kindwise (paid) or an LLM with the user's own key,
   clearly labelled as a suggestion.
 - **Perenual** as an optional richer data source (user key) for species outside the catalog.
