@@ -8,7 +8,7 @@ describe('catalog', () => {
   })
 
   it('finds by common name, alias and scientific name', () => {
-    expect(searchCatalog('snake')[0].id).toBe('dracaena-trifasciata')
+    expect(searchCatalog('snake plant')[0].id).toBe('dracaena-trifasciata')
     expect(searchCatalog('sansevieria')[0].id).toBe('dracaena-trifasciata')
     expect(searchCatalog('Epipremnum aureum')[0].id).toBe('epipremnum-aureum')
     expect(searchCatalog('   ')).toEqual([])
@@ -28,6 +28,11 @@ describe('catalog', () => {
     expect(findByScientificName('Philodendron erubescens')?.id).toBe('philodendron-erubescens')
     expect(findByScientificName('Philodendron xanadu')?.id).toBe('thaumatophyllum-xanadu')
     expect(searchCatalog('pink princess')[0].id).toBe('philodendron-erubescens')
+  })
+
+  it('finds the batch B succulents, cacti and small foliage', () => {
+    expect(findByScientificName('Sansevieria cylindrica')?.id).toBe('dracaena-angolensis')
+    expect(findByScientificName('Lithops aucampiae')?.id).toBe('lithops')
   })
 
   it('keeps names unambiguous across entries', () => {
