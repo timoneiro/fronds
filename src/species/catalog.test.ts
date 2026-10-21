@@ -10,7 +10,7 @@ describe('catalog', () => {
   it('finds by common name, alias and scientific name', () => {
     expect(searchCatalog('snake')[0].id).toBe('dracaena-trifasciata')
     expect(searchCatalog('sansevieria')[0].id).toBe('dracaena-trifasciata')
-    expect(searchCatalog('Epipremnum')[0].id).toBe('epipremnum-aureum')
+    expect(searchCatalog('Epipremnum aureum')[0].id).toBe('epipremnum-aureum')
     expect(searchCatalog('   ')).toEqual([])
   })
 
@@ -22,6 +22,12 @@ describe('catalog', () => {
     expect(findByScientificName('sansevieria TRIFASCIATA')?.id).toBe('dracaena-trifasciata')
     expect(findByScientificName('Quercus robur')).toBeUndefined()
     expect(findByScientificName('')).toBeUndefined()
+  })
+
+  it('finds the batch A aroids and climbers', () => {
+    expect(findByScientificName('Philodendron erubescens')?.id).toBe('philodendron-erubescens')
+    expect(findByScientificName('Philodendron xanadu')?.id).toBe('thaumatophyllum-xanadu')
+    expect(searchCatalog('pink princess')[0].id).toBe('philodendron-erubescens')
   })
 
   it('keeps names unambiguous across entries', () => {
