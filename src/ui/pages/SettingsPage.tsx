@@ -12,6 +12,8 @@ import { SubscribeForm } from '../components/SubscribeForm'
 import { SyncSection } from '../components/SyncSection'
 import { useGarden, usePlantNetKey } from '../hooks'
 
+const PLANTNET_KEY_SETTINGS = 'https://my.plantnet.org/settings/api-key'
+
 const stamp = () => new Date().toLocaleDateString('en-CA')
 
 export function SettingsPage() {
@@ -114,15 +116,29 @@ export function SettingsPage() {
           identifications a day). Your key is stored on this phone only. When you tap Identify, the photo is sent to
           Pl@ntNet.
         </p>
-        <p className="small">
-          <a className="link" href="https://my.plantnet.org/" target="_blank" rel="noreferrer">
-            Get a free key
-          </a>
-        </p>
         <ol className="muted small">
-          <li>Create a free account at my.plantnet.org.</li>
-          <li>Copy your API key from your account page.</li>
-          <li>Paste it below and tap Save.</li>
+          <li>
+            Create a free account at{' '}
+            <a className="link" href="https://my.plantnet.org/" target="_blank" rel="noreferrer">
+              my.plantnet.org
+            </a>
+            .
+          </li>
+          <li>
+            Open your{' '}
+            <a className="link" href={PLANTNET_KEY_SETTINGS} target="_blank" rel="noreferrer">
+              Pl@ntNet API key settings
+            </a>{' '}
+            and tick <strong>expose my API key</strong>.
+          </li>
+          <li>
+            Copy this app's address, paste it under <strong>Authorized domains</strong> and save:
+            <span className="row">
+              <code>{location.origin}</code>
+              <CopyButton text={location.origin} />
+            </span>
+          </li>
+          <li>Copy your API key from the same page, paste it below and tap Save.</li>
         </ol>
         <div className="row">
           <input
@@ -212,5 +228,24 @@ export function SettingsPage() {
         </p>
       </section>
     </>
+  )
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState<boolean>()
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+    } catch {
+      setCopied(false)
+    }
+  }
+
+  return (
+    <button className="btn btn-small" onClick={() => void copy()}>
+      {copied ? '✓ Copied' : copied === false ? 'Copy failed' : 'Copy'}
+    </button>
   )
 }

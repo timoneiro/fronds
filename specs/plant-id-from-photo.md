@@ -14,9 +14,11 @@ fronds has no way to go from "I have this plant in front of me" to a species.
    - Text: "Identify plants from a photo with Pl@ntNet. Needs a free Pl@ntNet account and your own
      API key (500 identifications a day). Your key is stored on this phone only. When you tap
      Identify, the photo is sent to Pl@ntNet."
-   - A link "Get a free key" to `https://my.plantnet.org/`, and these steps as an ordered list:
-     "Create a free account at my.plantnet.org." / "Copy your API key from your account page." /
-     "Paste it below and tap Save."
+   - These steps as an ordered list: create a free account at my.plantnet.org (linked) / open the
+     Pl@ntNet API key settings (linked to `https://my.plantnet.org/settings/api-key`) and tick
+     **expose my API key** / paste this app's address (`location.origin`, shown with a **Copy**
+     button) under **Authorized domains** / copy the key, paste it below and tap Save. Pl@ntNet
+     rejects browser requests whose `Origin` isn't an authorized domain (added in 0.7.1).
    - A text input "Pl@ntNet API key" (`autocomplete="off"`, `spellcheck={false}`) and a **Save** button.
      Saving trims the value; saving an empty value removes the key. When a key is saved, the card
      shows "Key saved on this phone." and a **Remove key** button.
@@ -46,7 +48,7 @@ fronds has no way to go from "I have this plant in front of me" to a species.
    - The results disappear.
 6. **Errors** (shown under the button; the form keeps working, and the user can still search or type):
    - HTTP 404 → "That doesn't look like a plant. Try a closer photo of the leaves or a flower."
-   - 401 or 403 → "Pl@ntNet didn't accept your key. Check it in Settings."
+   - 401 or 403 → "Pl@ntNet didn't accept your key. Check the key and your Pl@ntNet authorized domains (see Settings)."
    - 429 → "You've used today's free identifications. Try again tomorrow."
    - Network failure or any other status → "Couldn't reach Pl@ntNet. Try again later."
 
