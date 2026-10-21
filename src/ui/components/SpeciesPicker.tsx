@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { searchCatalog, type Species } from '../../species/catalog'
 import { searchWikipedia, type WikiHit } from '../../species/wikipedia'
 
-export type SpeciesChoice = { speciesId: string; species: Species } | { speciesName: string }
+export type SpeciesChoice = { speciesId: string; species: Species } | { speciesName: string; suggestedName?: string }
 
 interface Props {
   label: string | undefined
