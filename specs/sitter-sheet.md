@@ -1,7 +1,7 @@
 # Vacation: plant-sitter sheet and paused reminders
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/43
 Builds after: none
 
 ## Problem

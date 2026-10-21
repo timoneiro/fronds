@@ -1,7 +1,7 @@
 # Sync more than plants and events
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/45
 Builds after: none
 
 ## Problem

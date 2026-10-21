@@ -1,7 +1,7 @@
 # Photo timeline per plant
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/34
 Builds after: none
 
 ## Problem

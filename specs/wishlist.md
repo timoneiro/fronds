@@ -1,7 +1,7 @@
 # Wishlist of plants to get
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/47
 Builds after: synced-tables
 
 ## Problem

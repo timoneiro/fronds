@@ -1,7 +1,7 @@
 # QR code for household invites
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/37
 Builds after: none
 
 ## Problem

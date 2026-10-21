@@ -1,7 +1,7 @@
 # Subscribable calendar feed
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/30
 Builds after: none
 
 ## Problem

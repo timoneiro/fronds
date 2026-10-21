@@ -1,7 +1,7 @@
 # Graveyard: plants you lost
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/35
 Builds after: none
 
 ## Problem

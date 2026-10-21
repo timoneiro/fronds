@@ -1,7 +1,7 @@
 # Watering stats
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/44
 Builds after: none
 
 ## Problem

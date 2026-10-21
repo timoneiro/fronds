@@ -1,7 +1,7 @@
 # Send the backup file with the share sheet
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/42
 Builds after: none
 
 ## Problem

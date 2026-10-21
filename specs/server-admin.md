@@ -1,7 +1,7 @@
 # Server admin page
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/41
 Builds after: none
 
 ## Problem

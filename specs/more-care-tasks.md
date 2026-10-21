@@ -1,7 +1,7 @@
 # Care tasks beyond watering
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/32
 Builds after: none
 
 ## Problem

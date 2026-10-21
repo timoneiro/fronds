@@ -1,7 +1,7 @@
 # Rooms with light and humidity
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/39
 Builds after: synced-tables
 
 ## Problem

@@ -1,7 +1,7 @@
 # Seasonal watering intervals
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/40
 Builds after: none
 
 ## Problem

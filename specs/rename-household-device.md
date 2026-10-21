@@ -1,7 +1,7 @@
 # Rename a household or a phone
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/38
 Builds after: none
 
 ## Problem

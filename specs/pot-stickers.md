@@ -1,7 +1,7 @@
 # QR and NFC stickers on pots
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/36
 Builds after: qr-invites
 
 ## Problem

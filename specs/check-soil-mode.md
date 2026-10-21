@@ -1,7 +1,7 @@
 # "Check the soil" mode
 
 Status: draft
-Issue: 
+Issue: https://github.com/timoneiro/fronds/issues/31
 Builds after: undo-watering
 
 ## Problem
