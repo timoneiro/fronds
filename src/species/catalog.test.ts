@@ -35,6 +35,11 @@ describe('catalog', () => {
     expect(findByScientificName('Lithops aucampiae')?.id).toBe('lithops')
   })
 
+  it('finds the batch C trees, palms and ferns', () => {
+    expect(findByScientificName('Cordyline terminalis')?.id).toBe('cordyline-fruticosa')
+    expect(findByScientificName('Davallia fejeensis')?.id).toBe('davallia')
+  })
+
   it('keeps names unambiguous across entries', () => {
     const shared = new Set(['split-leaf philodendron', 'ribbon plant', 'dracaena', 'money tree'])
     expect(new Set(CATALOG.map((s) => norm(s.scientificName))).size).toBe(CATALOG.length)
