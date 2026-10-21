@@ -13,6 +13,7 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
 - **Built-in care guide** for ~60 common houseplants: light, humidity, difficulty, a care tip,
   a baseline watering interval and **pet toxicity** (ASPCA). Works offline.
 - **Wikipedia descriptions and photos** for any species — including ones outside the catalog.
+- **Search by any common name** — type the name you know, in any language, and find the species (via iNaturalist).
 - **Adaptive watering** — after a few waterings, fronds suggests an interval based on what you actually do.
 - **Calendar reminders** — "Add to Google Calendar" link per plant, or download an `.ics` file for
   Google/Apple Calendar with every plant's recurring watering.
@@ -32,7 +33,7 @@ Built for phones (Android and iPhone), works offline, and needs **no account and
 ## Privacy & data
 
 Everything is stored locally in your browser (IndexedDB). Nothing is sent anywhere except species
-look-ups to Wikipedia — and, only if you connect one, your own sync server. If you subscribe to
+look-ups to Wikipedia and iNaturalist — and, only if you connect one, your own sync server. If you subscribe to
 update emails, your address goes to [Buttondown](https://buttondown.com) (the newsletter service), never
 to the app; unsubscribe from any email. Browsers can evict site
 data under storage pressure — especially iOS Safari — so install the app to your home screen and

@@ -51,7 +51,7 @@ export const CATALOG: Species[] = [
   s({ id: 'scindapsus-pictus', commonName: 'Satin pothos', scientificName: 'Scindapsus pictus', aliases: ['Silver pothos', 'Silver philodendron'], light: 'medium', waterEveryDays: 9, humidity: 'medium', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Scindapsus pictus', tip: 'Leaves curl when it needs water — a handy built-in reminder.' }),
   s({ id: 'philodendron-hederaceum', commonName: 'Heartleaf philodendron', scientificName: 'Philodendron hederaceum', aliases: ['Sweetheart plant', 'Philodendron'], light: 'medium', waterEveryDays: 7, humidity: 'medium', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Philodendron hederaceum', tip: 'Water when the top 2–3 cm are dry; yellow leaves usually mean overwatering.' }),
   s({ id: 'thaumatophyllum-bipinnatifidum', commonName: 'Tree philodendron', scientificName: 'Thaumatophyllum bipinnatifidum', aliases: ['Philodendron selloum', 'Split-leaf philodendron', 'Hope philodendron'], light: 'bright-indirect', waterEveryDays: 7, humidity: 'medium', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Thaumatophyllum bipinnatifidum', tip: 'Needs room to spread; keep soil lightly moist in summer, drier in winter.' }),
-  s({ id: 'dracaena-trifasciata', commonName: 'Snake plant', scientificName: 'Dracaena trifasciata', aliases: ['Sansevieria', "Mother-in-law's tongue"], light: 'low', waterEveryDays: 14, humidity: 'low', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Dracaena trifasciata', tip: 'Let the soil dry out completely; water even less in winter. Overwatering is the main killer.' }),
+  s({ id: 'dracaena-trifasciata', commonName: 'Snake plant', scientificName: 'Dracaena trifasciata', aliases: ['Sansevieria', "Mother-in-law's tongue", 'Sansevieria trifasciata'], light: 'low', waterEveryDays: 14, humidity: 'low', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Dracaena trifasciata', tip: 'Let the soil dry out completely; water even less in winter. Overwatering is the main killer.' }),
   s({ id: 'zamioculcas-zamiifolia', commonName: 'ZZ plant', scientificName: 'Zamioculcas zamiifolia', aliases: ['Zanzibar gem', 'Zamioculcas'], light: 'low', waterEveryDays: 14, humidity: 'low', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Zamioculcas', tip: 'Stores water in its rhizomes — water only when the soil is fully dry.' }),
   s({ id: 'chlorophytum-comosum', commonName: 'Spider plant', scientificName: 'Chlorophytum comosum', aliases: ['Airplane plant', 'Ribbon plant'], light: 'medium', waterEveryDays: 7, humidity: 'medium', petToxicity: 'non-toxic', difficulty: 'easy', wiki: 'Chlorophytum comosum', tip: 'Brown tips often come from fluoride in tap water; rainwater or filtered water helps.' }),
   s({ id: 'spathiphyllum', commonName: 'Peace lily', scientificName: 'Spathiphyllum', aliases: ['Spath'], light: 'low', waterEveryDays: 6, humidity: 'high', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Spathiphyllum', tip: 'Dramatically droops when thirsty and perks up within hours of watering.' }),
@@ -108,7 +108,7 @@ export const CATALOG: Species[] = [
   s({ id: 'tillandsia', commonName: 'Air plant', scientificName: 'Tillandsia', aliases: ['Tillandsia'], light: 'bright-indirect', waterEveryDays: 7, humidity: 'medium', petToxicity: 'non-toxic', difficulty: 'easy', wiki: 'Tillandsia', tip: '"Watering" = soak 20–30 min, then shake off and dry upside-down within 4 hours.' }),
 ]
 
-const norm = (x: string) => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+export const norm = (x: string) => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
 
 /** Display name of a plant's species, from the catalog or free text. */
 export function speciesLabel(plant: Pick<Plant, 'speciesId' | 'speciesName'>): string | undefined {
@@ -120,14 +120,16 @@ export function getSpecies(id: string | undefined): Species | undefined {
 }
 
 /**
- * Finds a species by scientific name (case-insensitive). Falls back to the genus
- * (first word) for genus-level entries such as `Spathiphyllum`.
+ * Finds a species by scientific name (case-insensitive), then by alias. Falls back
+ * to the genus (first word) for genus-level entries such as `Spathiphyllum`.
  */
 export function findByScientificName(name: string): Species | undefined {
   const q = norm(name)
   if (!q) return undefined
   const exact = CATALOG.find((x) => norm(x.scientificName) === q)
   if (exact) return exact
+  const byAlias = CATALOG.find((x) => (x.aliases ?? []).some((a) => norm(a) === q))
+  if (byAlias) return byAlias
   const genus = q.split(/\s+/)[0]
   return CATALOG.find((x) => !/\s/.test(norm(x.scientificName)) && norm(x.scientificName) === genus)
 }

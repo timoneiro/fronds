@@ -73,7 +73,7 @@ function PlantForm({ existing }: { existing?: Plant }) {
         ...f,
         speciesId: choice.speciesId,
         speciesName: undefined,
-        name: f.name || choice.species.commonName,
+        name: f.name || (choice.suggestedName ?? choice.species.commonName),
         wateringIntervalDays: intervalTouched ? f.wateringIntervalDays : choice.species.waterEveryDays,
       }))
     } else {

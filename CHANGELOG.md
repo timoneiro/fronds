@@ -9,6 +9,16 @@ Heading: "## x.y.z — YYYY-MM-DD". Body: short paragraphs and "- " bullets; inl
 Write for people who use the app, not for developers.
 -->
 
+## 0.8.0 — 2026-10-21
+
+- **Find your plant by the name you know** — the species search now finds plants by their common
+  name in any language. Type the name you use, such as "costela-de-adão", and tap **Not listed?
+  Search online**. Results come from iNaturalist and Wikipedia.
+- Tap an iNaturalist result to fill in its species. The name you searched for becomes your plant's
+  name, unless you've already typed one.
+- The search needs an internet connection, and the name you type is sent to iNaturalist and
+  Wikipedia to look it up.
+
 ## 0.7.1 — 2026-10-21
 
 - **Plant identification setup fixed** — Pl@ntNet only accepts your key from websites you allow.
