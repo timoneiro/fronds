@@ -18,6 +18,8 @@ describe('catalog', () => {
     expect(findByScientificName('Monstera deliciosa')?.id).toBe('monstera-deliciosa')
     expect(findByScientificName('monstera DELICIOSA')?.id).toBe('monstera-deliciosa')
     expect(findByScientificName('Spathiphyllum wallisii')?.id).toBe('spathiphyllum')
+    expect(findByScientificName('Sansevieria trifasciata')?.id).toBe('dracaena-trifasciata')
+    expect(findByScientificName('sansevieria TRIFASCIATA')?.id).toBe('dracaena-trifasciata')
     expect(findByScientificName('Quercus robur')).toBeUndefined()
     expect(findByScientificName('')).toBeUndefined()
   })
