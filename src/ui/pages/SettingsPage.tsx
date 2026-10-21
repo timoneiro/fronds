@@ -215,7 +215,7 @@ export function SettingsPage() {
             GitHub
           </a>
           <br />
-          Plant descriptions and photos from Wikipedia. No account, no tracking.
+          Plant descriptions and photos from Wikipedia. Name search by iNaturalist. No account, no tracking.
           <br />
           Updates arrive on their own, like any website. Your plants stay on this device, and every
           change is public on GitHub.
