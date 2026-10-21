@@ -193,7 +193,7 @@ deep links work on GitHub Pages). Pushes to `main` are tested and deployed to Gi
 src/
   db/        Dexie schema (append-only versions), write actions, backup import/export, snapshots
   domain/    pure logic: watering schedule, backup merge, calendar export (unit-tested)
-  species/   bundled care catalog + Wikipedia client
+  species/   bundled care catalog + Wikipedia, iNaturalist and Pl@ntNet clients
   sync/      sync client, push reminders, reminder check (shared with the service worker)
   ui/        pages, components, hooks
   sw.ts      service worker: offline cache + push notifications
@@ -205,6 +205,9 @@ server/      optional sync & reminder server (Node, runs the shared domain code 
 Append an entry to [`src/species/catalog.ts`](src/species/catalog.ts). `wiki` must be an existing
 English Wikipedia article title; pet toxicity should follow the
 [ASPCA plant list](https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants).
+If ASPCA doesn't list the species, use its genus only when every listed member of the genus agrees;
+otherwise leave the species out. Aliases may include cultivar names; `npm test` checks that names
+don't clash.
 PRs welcome.
 
 ## Support fronds

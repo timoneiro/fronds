@@ -4,6 +4,7 @@
  * Values are general indoor baselines for a typical home, not rules:
  * `waterEveryDays` seeds a plant's interval and the user adjusts from there.
  * Pet toxicity follows the ASPCA toxic/non-toxic plant lists (cats & dogs).
+ * Species ASPCA doesn't list (nor their genus) are left out.
  * To add a species, append an entry; `wiki` must be an existing English
  * Wikipedia article title (used for the description and photo).
  */
