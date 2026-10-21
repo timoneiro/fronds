@@ -2,7 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { downloadBlob, downloadJSON, exportBackup, importMerge, importReplace } from '../../db/backupIO'
-import { db } from '../../db/db'
+import { db, setSetting } from '../../db/db'
 import { LINKS } from '../../lib/links'
 import { BUTTONDOWN_USERNAME } from '../../lib/newsletter'
 import { requestPersistentStorage } from '../../lib/storage'
@@ -10,7 +10,7 @@ import { BackupError } from '../../domain/backup'
 import { buildICS } from '../../domain/calendar'
 import { SubscribeForm } from '../components/SubscribeForm'
 import { SyncSection } from '../components/SyncSection'
-import { useGarden } from '../hooks'
+import { useGarden, usePlantNetKey } from '../hooks'
 
 const stamp = () => new Date().toLocaleDateString('en-CA')
 
@@ -41,6 +41,20 @@ export function SettingsPage() {
     } catch (err) {
       setMessage({ kind: 'error', text: err instanceof BackupError ? err.message : 'Import failed.' })
     }
+  }
+
+  const savedKey = usePlantNetKey()
+  const [keyDraft, setKeyDraft] = useState<string>()
+  const keyText = keyDraft ?? savedKey ?? ''
+
+  const onSaveKey = async () => {
+    await setSetting('plantnetKey', keyText.trim() || undefined)
+    setKeyDraft(undefined)
+  }
+
+  const onRemoveKey = async () => {
+    await setSetting('plantnetKey', undefined)
+    setKeyDraft(undefined)
   }
 
   const onCalendar = () => {
@@ -90,6 +104,48 @@ export function SettingsPage() {
               ))}
             </ul>
           </details>
+        )}
+      </section>
+
+      <section className="card">
+        <h3>Plant identification (optional)</h3>
+        <p className="muted small">
+          Identify plants from a photo with Pl@ntNet. Needs a free Pl@ntNet account and your own API key (500
+          identifications a day). Your key is stored on this phone only. When you tap Identify, the photo is sent to
+          Pl@ntNet.
+        </p>
+        <p className="small">
+          <a className="link" href="https://my.plantnet.org/" target="_blank" rel="noreferrer">
+            Get a free key
+          </a>
+        </p>
+        <ol className="muted small">
+          <li>Create a free account at my.plantnet.org.</li>
+          <li>Copy your API key from your account page.</li>
+          <li>Paste it below and tap Save.</li>
+        </ol>
+        <div className="row">
+          <input
+            className="input"
+            type="text"
+            value={keyText}
+            onChange={(e) => setKeyDraft(e.target.value)}
+            placeholder="Pl@ntNet API key"
+            aria-label="Pl@ntNet API key"
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <button className="btn" onClick={() => void onSaveKey()}>
+            Save
+          </button>
+        </div>
+        {savedKey && (
+          <p className="small">
+            <span className="muted">Key saved on this phone.</span>{' '}
+            <button className="btn btn-small btn-ghost" onClick={() => void onRemoveKey()}>
+              Remove key
+            </button>
+          </p>
         )}
       </section>
 
