@@ -91,6 +91,10 @@ Examples:
 3. **Batch B: succulents, cacti and small foliage**
    - Change: append these lines to `CATALOG`, and add a test that `findByScientificName` finds
      `Sansevieria cylindrica` → `dracaena-angolensis` and `Lithops aucampiae` → `lithops`.
+     Cylindrical snake plant ties with the snake plant on the query "snake" and sorts first, so in
+     the existing test "finds by common name, alias and scientific name" change
+     `searchCatalog('snake')` to `searchCatalog('snake plant')` (same expected id). This is the only
+     change allowed to an existing assertion in this task.
      ```ts
        s({ id: 'dracaena-angolensis', commonName: 'Cylindrical snake plant', scientificName: 'Dracaena angolensis', aliases: ['Sansevieria cylindrica', 'African spear', 'Spear sansevieria'], light: 'low', waterEveryDays: 21, humidity: 'low', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Dracaena angolensis', tip: 'Even more drought-tolerant than the snake plant; in winter, water about once a month.' }),
        s({ id: 'kalanchoe-tomentosa', commonName: 'Panda plant', scientificName: 'Kalanchoe tomentosa', aliases: ['Pussy ears', 'Chocolate soldier'], light: 'bright-direct', waterEveryDays: 14, humidity: 'low', petToxicity: 'toxic', difficulty: 'easy', wiki: 'Kalanchoe tomentosa', tip: 'Its fuzzy leaves store water: water the soil, not the leaves, and only when it is dry.' }),
