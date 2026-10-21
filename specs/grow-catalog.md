@@ -1,7 +1,7 @@
 # Grow the care catalog to 100 species
 
 Status: ready
-Issue: <issue link>
+Issue: https://github.com/timoneiro/fronds/issues/57
 Builds after: none
 
 ## Problem
