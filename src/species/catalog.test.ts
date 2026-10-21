@@ -40,6 +40,12 @@ describe('catalog', () => {
     expect(findByScientificName('Davallia fejeensis')?.id).toBe('davallia')
   })
 
+  it('finds the batch D flowering plants', () => {
+    expect(findByScientificName('Streptocarpus saxorum')?.id).toBe('streptocarpus')
+    expect(findByScientificName('Streptocarpus ionanthus')?.id).toBe('saintpaulia')
+    expect(findByScientificName('Hibiscus rosa-sinensis')?.id).toBe('hibiscus-rosa-sinensis')
+  })
+
   it('keeps names unambiguous across entries', () => {
     const shared = new Set(['split-leaf philodendron', 'ribbon plant', 'dracaena', 'money tree'])
     expect(new Set(CATALOG.map((s) => norm(s.scientificName))).size).toBe(CATALOG.length)
